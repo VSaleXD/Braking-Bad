@@ -11,14 +11,10 @@ public class playerController : MonoBehaviour
     }
     void Update()
     {
-        if(Mouse.current.leftButton.isPressed)
-        {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            Vector2 direction = (mousePos - transform.position).normalized;
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        Vector2 direction = (mousePos - transform.position).normalized;
 
-            transform.up = direction;
-            rb.AddForce(direction * thrustforce);
-        }
-        
+        transform.up = direction;
+        rb.AddForce(direction * thrustforce);
     }
 }
