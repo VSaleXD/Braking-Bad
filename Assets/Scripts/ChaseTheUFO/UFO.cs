@@ -11,6 +11,7 @@ public class UFO : MonoBehaviour
     public float maxSpinSpeed = 10f;
     [SerializeField] public bool isDestroyed = false;
     Rigidbody2D rb;
+    public GameObject explosionEffect;
     void Start()
     {
         float randomSize = Random.Range(minSize, maxSize);
@@ -27,10 +28,11 @@ public class UFO : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (isDestroyed)
+        if (collision.gameObject.CompareTag("Player"))
         {
+            isDestroyed = true;
+            Instantiate(explosionEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
-    
 }
