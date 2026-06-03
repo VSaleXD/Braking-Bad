@@ -191,5 +191,5 @@ MonoBehaviour:
   minSpeed: 500
   maxSpeed: 1000
   maxSpinSpeed: 10
-  isDestroyed: 0
+  isDestroyed: 1
   explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}
