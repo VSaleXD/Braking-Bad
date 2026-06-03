@@ -6,7 +6,7 @@ namespace BrakingBad.Gameplay
     /// <summary>
     /// Procedural checkpoint minigame: players earn score from checkpoint progress, speed, and remaining time.
     /// </summary>
-    public sealed class Minigame_DriftMadness : BaseMinigameManager
+    public class Minigame_DriftMadness : BaseMinigameManager
     {
         [SerializeField] private float checkpointBaseScore = 15f;
         [SerializeField] private float speedScoreMultiplier = 3f;
