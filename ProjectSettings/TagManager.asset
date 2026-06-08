@@ -6,6 +6,7 @@ TagManager:
   tags:
   - UFO
   - Ball
+  - Wall
   layers:
   - Default
   - TransparentFX

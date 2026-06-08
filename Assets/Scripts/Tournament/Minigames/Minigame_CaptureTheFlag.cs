@@ -10,7 +10,7 @@ namespace BrakingBad.Gameplay
         [SerializeField] private float captureBonus = 200f;
         [SerializeField] private Transform flagResetPoint;
         [SerializeField] private GameObject flagPrefab;
-
+        
         private CaptureTheFlagItem activeFlag;
 
         protected override void OnMatchStarted()
@@ -81,7 +81,9 @@ namespace BrakingBad.Gameplay
     {
         [SerializeField] private Vector3 carryLocalOffset = new Vector3(0f, 1.15f, 0f);
         [SerializeField] private float dropForwardOffset = 0.5f;
-        [SerializeField] private Rigidbody2D rigidbody2D;
+        
+        // PERBAIKAN 1: Mengubah nama variabel menjadi rb2D agar tidak konflik dengan properti bawaan Unity
+        [SerializeField] private Rigidbody2D rb2D;
 
         private Minigame_CaptureTheFlag manager;
         private Transform originalParent;
@@ -95,9 +97,9 @@ namespace BrakingBad.Gameplay
             originalParent = transform.parent;
             originalLocalPosition = transform.localPosition;
 
-            if (rigidbody2D == null)
+            if (rb2D == null)
             {
-                rigidbody2D = GetComponent<Rigidbody2D>();
+                rb2D = GetComponent<Rigidbody2D>();
             }
         }
 
@@ -110,11 +112,11 @@ namespace BrakingBad.Gameplay
         {
             Carrier = carrier;
 
-            if (rigidbody2D != null)
+            if (rb2D != null)
             {
-                rigidbody2D.linearVelocity = Vector2.zero;
-                rigidbody2D.angularVelocity = 0f;
-                rigidbody2D.simulated = false;
+                rb2D.linearVelocity = Vector2.zero;
+                rb2D.angularVelocity = 0f;
+                rb2D.simulated = false;
             }
 
             transform.SetParent(carrier.transform, worldPositionStays: false);
@@ -135,10 +137,10 @@ namespace BrakingBad.Gameplay
             transform.SetParent(null, worldPositionStays: true);
             transform.position = worldPosition + carrierTransform.up * dropForwardOffset;
 
-            if (rigidbody2D != null)
+            if (rb2D != null)
             {
-                rigidbody2D.simulated = true;
-                rigidbody2D.linearVelocity = carrierTransform.GetComponent<Rigidbody2D>() != null
+                rb2D.simulated = true;
+                rb2D.linearVelocity = carrierTransform.GetComponent<Rigidbody2D>() != null
                     ? carrierTransform.GetComponent<Rigidbody2D>().linearVelocity
                     : Vector2.zero;
             }
@@ -151,29 +153,31 @@ namespace BrakingBad.Gameplay
             transform.localPosition = originalLocalPosition;
             transform.position = worldPosition;
 
-            if (rigidbody2D != null)
+            if (rb2D != null)
             {
-                rigidbody2D.simulated = true;
-                rigidbody2D.linearVelocity = Vector2.zero;
-                rigidbody2D.angularVelocity = 0f;
+                rb2D.simulated = true;
+                rb2D.linearVelocity = Vector2.zero;
+                rb2D.angularVelocity = 0f;
             }
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (manager == null || Carrier == null)
+            if (collision == null || collision.collider == null) return;
+
+            // PERBAIKAN 2: Proteksi ekstra pengecekan null untuk mencegah bug NullReferenceException
+            if (Carrier == null)
             {
                 TournamentPlayerAgent freePickupAgent = collision.collider.GetComponentInParent<TournamentPlayerAgent>();
-                if (freePickupAgent != null)
+                if (freePickupAgent != null && manager != null)
                 {
                     manager.TryPickupFlag(freePickupAgent);
                 }
-
                 return;
             }
 
             TournamentPlayerAgent attacker = collision.collider.GetComponentInParent<TournamentPlayerAgent>();
-            if (attacker != null && attacker.PlayerID != Carrier.PlayerID)
+            if (attacker != null && Carrier != null && attacker.PlayerID != Carrier.PlayerID && manager != null)
             {
                 manager.NotifyFlagCarrierHit(attacker);
             }

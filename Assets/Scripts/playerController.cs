@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-
+using BrakingBad.Gameplay;
 
 public class playerController : MonoBehaviour
 {
@@ -62,7 +62,6 @@ public class playerController : MonoBehaviour
         isDrifting = Mathf.Abs(lateralVelocity) > driftTrailThreshold;
         return isDrifting;
     }
-
     void Start()
     {
         if (tournamentAgent == null)
