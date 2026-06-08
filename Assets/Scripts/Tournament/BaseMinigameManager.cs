@@ -219,7 +219,7 @@ namespace BrakingBad.Gameplay
         {
             if (uiDocument == null)
             {
-                uiDocument = FindObjectOfType<UIDocument>();
+                uiDocument = FindFirstObjectByType<UIDocument>();
             }
 
             if (uiDocument == null)
