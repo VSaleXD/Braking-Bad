@@ -116,7 +116,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 50
+  m_Time: 5
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 5669144373273209371}
   - component: {fileID: 8753569338904462157}
   - component: {fileID: 2591894994752036421}
+  - component: {fileID: 2428403255977375369}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -255,6 +256,7 @@ MonoBehaviour:
   scoreMultiplier: 10
   ufoPoints: 100
   movementEnabled: 0
+  maxSpeed: 100
   thrustforce: 10
   rotaionSpeed: 200
   driftFactor: 0.95
@@ -278,6 +280,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a75539d09bf2a934f8990e2c1bea2f24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WheelTrailHandler
+--- !u!114 &2428403255977375369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4392015073190137517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb5a9ad1569f942ac2375f8c96f982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.TournamentPlayerAgent
+  playerID: 1
+  teamIndex: 0
+  cachedRigidbody: {fileID: 5669144373273209371}
+  isEliminated: 0
+  steeringMultiplier: 1
+  throttleMultiplier: 1
 --- !u!1 &5076739283033498891
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,7 +379,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 50
+  m_Time: 5
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -667,7 +687,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 50
+  m_Time: 5
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -809,7 +829,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 50
+  m_Time: 5
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3

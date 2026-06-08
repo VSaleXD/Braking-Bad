@@ -1,19 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 using BrakingBad.Gameplay;
 
 public class playerController : MonoBehaviour
 {
-    private float elapsedTime = 0f;
-    
-    [Header("Scoring")]
-    public float score = 0f;
-    public float scoreMultiplier = 10f;
-    public float ufoPoints = 100f;
-    
     [Header("Movement State")]
     public bool movementEnabled = false;
+    public float maxSpeed = 10f;
     public float thrustforce = 5f;
     public float rotaionSpeed = 200f;
 
@@ -38,8 +31,6 @@ public class playerController : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D carCollider;
     private TournamentPlayerAgent tournamentAgent;
-    public UIDocument uiDocument;
-    private Label scoreText;
     private Vector2 lastVelocity;
 
     void Awake()
@@ -52,32 +43,25 @@ public class playerController : MonoBehaviour
             carCollider.sharedMaterial = wallBounceMaterial;
         }
     }
+
     float getLateralvelocity()
     {
         return Vector2.Dot(transform.right, rb.linearVelocity);
     }
+
     public bool isTireScreeching(out float lateralVelocity, out bool isDrifting)
     {
         lateralVelocity = getLateralvelocity();
         isDrifting = Mathf.Abs(lateralVelocity) > driftTrailThreshold;
         return isDrifting;
     }
+
     void Start()
     {
         if (tournamentAgent == null)
         {
             tournamentAgent = GetComponent<TournamentPlayerAgent>();
         }
-
-        if (uiDocument != null)
-        {
-            scoreText = uiDocument.rootVisualElement.Q<Label>("ScoreText");
-        }
-    }
-
-    void Update()
-    {
-        updateScore();
     }
 
     void FixedUpdate()
@@ -93,19 +77,6 @@ public class playerController : MonoBehaviour
         killOrthogonalVelocity();
     }
 
-    void updateScore()
-    {
-        elapsedTime += Time.deltaTime;
-        score = Mathf.FloorToInt(elapsedTime * scoreMultiplier);
-
-        if (scoreText != null)
-        {
-            scoreText.text = "Score: " + score.ToString();
-        }
-    }
-
-
-
     void movePlayer()
     {
         if (Camera.main == null) return;
@@ -116,11 +87,11 @@ public class playerController : MonoBehaviour
         float steeringMultiplier = 1f;
         float throttleMultiplier = 1f;
 
-        //if (tournamentAgent != null)
-        //{
-        //    steeringMultiplier = tournamentAgent.SteeringMultiplier;
-        //    throttleMultiplier = tournamentAgent.ThrottleMultiplier;
-        //}
+        if (tournamentAgent != null)
+        {
+            steeringMultiplier = tournamentAgent.steeringMultiplier;
+            throttleMultiplier = tournamentAgent.throttleMultiplier;
+        }
 
         Vector2 targetDirection = mousePos - transform.position;
         if (Mathf.Abs(steeringMultiplier) > 0.001f && steeringMultiplier < 0f)
@@ -140,12 +111,17 @@ public class playerController : MonoBehaviour
             float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg - 90f;
             Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
             
-            // Menggunakan Time.fixedDeltaTime karena fungsi ini dipanggil di FixedUpdate
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, effectiveRotationSpeed * Mathf.Abs(steeringMultiplier) * Time.fixedDeltaTime);
         }
 
         rb.AddForce(transform.up * (thrustforce * throttleMultiplier));
         lastVelocity = rb.linearVelocity;
+
+        // Membatasi kecepatan maksimum
+        if (rb.linearVelocity.magnitude > maxSpeed)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+        }
     }
 
     void killOrthogonalVelocity()
@@ -154,20 +130,12 @@ public class playerController : MonoBehaviour
         Vector2 rightVelocity = transform.right * Vector2.Dot(rb.linearVelocity, transform.right);
         rb.linearVelocity = forwardVelocity + rightVelocity * driftFactor;
 
-        // Mengecek kecepatan menyamping untuk menentukan status drifting secara riil
         IsDrifting = Mathf.Abs(Vector2.Dot(rb.linearVelocity, transform.right)) > driftTrailThreshold;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("UFO"))
-        {
-            score += ufoPoints;
-            if (scoreText != null)
-            {
-                scoreText.text = "Score: " + score.ToString();
-            }
-        }
+        // NOTED: Deteksi tabrakan UFO dipindah ke skrip UFO actor bawaan mode agar rapi!
 
         if (ShouldBounceOnCollision(collision))
         {

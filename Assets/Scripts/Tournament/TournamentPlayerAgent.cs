@@ -16,8 +16,8 @@ namespace BrakingBad.Gameplay
         [SerializeField] private bool isEliminated;
 
         [Header("Control Modifiers")]
-        [SerializeField] private float steeringMultiplier = 1f;
-        [SerializeField] private float throttleMultiplier = 1f;
+        public float steeringMultiplier = 1f;
+        public float throttleMultiplier = 1f;
 
         public int PlayerID => playerID;
         public int TeamIndex => teamIndex;
