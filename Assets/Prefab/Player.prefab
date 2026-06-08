@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 5857422427430893418}
   - component: {fileID: 5669144373273209371}
   - component: {fileID: 8753569338904462157}
+  - component: {fileID: 3427263740545817848}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -259,6 +260,10 @@ MonoBehaviour:
   rotaionSpeed: 200
   driftFactor: 0.95
   driftTrailThreshold: 1.5
+  driftSteerLag: 0.5
+  wallBounceMultiplier: 1.02
+  wallBounceMaterial: {fileID: 0}
+  wallTag: Wall
   tireTrails:
   - {fileID: 4442019967076241634}
   - {fileID: 6757491610833602040}
@@ -267,6 +272,24 @@ MonoBehaviour:
   isDestroyed: 0
   uiDocument: {fileID: 0}
   explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}
+--- !u!114 &3427263740545817848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4392015073190137517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb5a9ad1569f942ac2375f8c96f982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.TournamentPlayerAgent
+  playerID: 1
+  teamIndex: 0
+  cachedRigidbody: {fileID: 5669144373273209371}
+  isEliminated: 0
+  steeringMultiplier: 1
+  throttleMultiplier: 1
 --- !u!1 &5076739283033498891
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +459,7 @@ Transform:
   m_GameObject: {fileID: 6513426880234660889}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.03, y: -1.49, z: 0}
+  m_LocalPosition: {x: -1.04, y: 2.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
