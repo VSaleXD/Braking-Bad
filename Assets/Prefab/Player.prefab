@@ -24,8 +24,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815661004419176726}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.03, y: 1.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 5033430990928387080}
   - {fileID: 9128294947530537292}
   - {fileID: 4427578405113228834}
-  m_Father: {fileID: 5857422427430893418}
+  m_Father: {fileID: 4966819725076414274}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3139273347464520668
 GameObject:
@@ -116,7 +116,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 0.7
+  m_Time: 50
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -138,8 +138,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.3773585, g: 0.37617183, b: 0.37617183, a: 1}
-      key1: {r: 0.3803922, g: 0.3803922, b: 0.3803922, a: 0}
+      key0: {r: 0, g: 0, b: 0, a: 0.38039216}
+      key1: {r: 0, g: 0, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 5857422427430893418}
   - component: {fileID: 5669144373273209371}
   - component: {fileID: 8753569338904462157}
+  - component: {fileID: 2591894994752036421}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -209,7 +210,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4966819725076414274}
-  - {fileID: 1745104999584316947}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &5669144373273209371
@@ -226,7 +226,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0.01
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -235,7 +235,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
@@ -254,19 +254,30 @@ MonoBehaviour:
   score: 0
   scoreMultiplier: 10
   ufoPoints: 100
+  movementEnabled: 0
   thrustforce: 10
-  maxSpeed: 5
   rotaionSpeed: 200
   driftFactor: 0.95
   driftTrailThreshold: 1.5
-  tireTrails:
-  - {fileID: 4442019967076241634}
-  - {fileID: 6757491610833602040}
-  - {fileID: 3797599946581421006}
-  - {fileID: 4774022692538464176}
+  driftSteerLag: 0.5
+  wallBounceMultiplier: 1.02
+  wallBounceMaterial: {fileID: 0}
+  wallTag: Wall
+  explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}
   isDestroyed: 0
   uiDocument: {fileID: 0}
-  explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}
+--- !u!114 &2591894994752036421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4392015073190137517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a75539d09bf2a934f8990e2c1bea2f24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WheelTrailHandler
 --- !u!1 &5076739283033498891
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +304,7 @@ Transform:
   m_GameObject: {fileID: 5076739283033498891}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.41, y: 0.3800001, z: 0}
+  m_LocalPosition: {x: -1.28, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -348,7 +359,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 0.7
+  m_Time: 50
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -370,8 +381,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.3773585, g: 0.37617183, b: 0.37617183, a: 1}
-      key1: {r: 0.3803922, g: 0.3803922, b: 0.3803922, a: 0}
+      key0: {r: 0, g: 0, b: 0, a: 0.38039216}
+      key1: {r: 0, g: 0, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -439,7 +450,8 @@ Transform:
   m_LocalPosition: {x: -0.03, y: -1.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1745104999584316947}
   m_Father: {fileID: 5857422427430893418}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &8660498894156023848
@@ -655,7 +667,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 0.7
+  m_Time: 50
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -677,8 +689,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.3773585, g: 0.37617183, b: 0.37617183, a: 1}
-      key1: {r: 0.3803922, g: 0.3803922, b: 0.3803922, a: 0}
+      key0: {r: 0, g: 0, b: 0, a: 0.38039216}
+      key1: {r: 0, g: 0, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -797,7 +809,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 0.7
+  m_Time: 50
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -819,8 +831,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.3773585, g: 0.37617183, b: 0.37617183, a: 1}
-      key1: {r: 0.3803922, g: 0.3803922, b: 0.3803922, a: 0}
+      key0: {r: 0, g: 0, b: 0, a: 0.38039216}
+      key1: {r: 0, g: 0, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
