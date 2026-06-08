@@ -8,6 +8,7 @@ namespace BrakingBad.Gameplay
     public sealed class Minigame_CarSoccer : BaseMinigameManager
     {
         [SerializeField] private float goalReward = 100f;
+        [SerializeField] private string ballTag = "Ball";
 
         public void RegisterGoal(int scoringTeamIndex)
         {

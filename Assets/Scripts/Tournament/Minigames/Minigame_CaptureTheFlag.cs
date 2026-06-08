@@ -81,7 +81,7 @@ namespace BrakingBad.Gameplay
     {
         [SerializeField] private Vector3 carryLocalOffset = new Vector3(0f, 1.15f, 0f);
         [SerializeField] private float dropForwardOffset = 0.5f;
-        [SerializeField] private Rigidbody2D rb;
+        [SerializeField] private Rigidbody2D rigidbody2D;
 
         private Minigame_CaptureTheFlag manager;
         private Transform originalParent;
@@ -95,9 +95,9 @@ namespace BrakingBad.Gameplay
             originalParent = transform.parent;
             originalLocalPosition = transform.localPosition;
 
-            if (rb == null)
+            if (rigidbody2D == null)
             {
-                rb = GetComponent<Rigidbody2D>();
+                rigidbody2D = GetComponent<Rigidbody2D>();
             }
         }
 
@@ -110,11 +110,11 @@ namespace BrakingBad.Gameplay
         {
             Carrier = carrier;
 
-            if (rb != null)
+            if (rigidbody2D != null)
             {
-                rb.linearVelocity = Vector2.zero;
-                rb.angularVelocity = 0f;
-                rb.simulated = false;
+                rigidbody2D.linearVelocity = Vector2.zero;
+                rigidbody2D.angularVelocity = 0f;
+                rigidbody2D.simulated = false;
             }
 
             transform.SetParent(carrier.transform, worldPositionStays: false);
@@ -135,10 +135,10 @@ namespace BrakingBad.Gameplay
             transform.SetParent(null, worldPositionStays: true);
             transform.position = worldPosition + carrierTransform.up * dropForwardOffset;
 
-            if (rb != null)
+            if (rigidbody2D != null)
             {
-                rb.simulated = true;
-                rb.linearVelocity = carrierTransform.GetComponent<Rigidbody2D>() != null
+                rigidbody2D.simulated = true;
+                rigidbody2D.linearVelocity = carrierTransform.GetComponent<Rigidbody2D>() != null
                     ? carrierTransform.GetComponent<Rigidbody2D>().linearVelocity
                     : Vector2.zero;
             }
@@ -151,11 +151,11 @@ namespace BrakingBad.Gameplay
             transform.localPosition = originalLocalPosition;
             transform.position = worldPosition;
 
-            if (rb != null)
+            if (rigidbody2D != null)
             {
-                rb.simulated = true;
-                rb.linearVelocity = Vector2.zero;
-                rb.angularVelocity = 0f;
+                rigidbody2D.simulated = true;
+                rigidbody2D.linearVelocity = Vector2.zero;
+                rigidbody2D.angularVelocity = 0f;
             }
         }
 
