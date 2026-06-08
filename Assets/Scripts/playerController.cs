@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-using BrakingBad.Gameplay;
+
 
 public class playerController : MonoBehaviour
 {
@@ -27,7 +27,6 @@ public class playerController : MonoBehaviour
     [SerializeField] public bool isDestroyed = false;
     Rigidbody2D rb;
     Collider2D carCollider;
-    TournamentPlayerAgent tournamentAgent;
     public UIDocument uiDocument;
     public GameObject explosionEffect;
     private Label scoreText;
@@ -37,8 +36,7 @@ public class playerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         carCollider = GetComponent<Collider2D>();
-        tournamentAgent = GetComponent<TournamentPlayerAgent>();
-
+    
         if (carCollider != null && wallBounceMaterial != null)
         {
             carCollider.sharedMaterial = wallBounceMaterial;
@@ -50,11 +48,6 @@ public class playerController : MonoBehaviour
         if (rb == null)
         {
             rb = GetComponent<Rigidbody2D>();
-        }
-
-        if (tournamentAgent == null)
-        {
-            tournamentAgent = GetComponent<TournamentPlayerAgent>();
         }
 
         if (uiDocument != null)
@@ -87,11 +80,11 @@ public class playerController : MonoBehaviour
         float steeringMultiplier = 1f;
         float throttleMultiplier = 1f;
 
-        if (tournamentAgent != null)
-        {
-            steeringMultiplier = tournamentAgent.SteeringMultiplier;
-            throttleMultiplier = tournamentAgent.ThrottleMultiplier;
-        }
+        //if (tournamentAgent != null)
+        //{
+        //    steeringMultiplier = tournamentAgent.SteeringMultiplier;
+        //    throttleMultiplier = tournamentAgent.ThrottleMultiplier;
+        //}
 
         Vector2 targetDirection = mousePos - transform.position;
         if (Mathf.Abs(steeringMultiplier) > 0.001f && steeringMultiplier < 0f)
