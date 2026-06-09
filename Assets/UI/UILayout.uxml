@@ -1,0 +1,5 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Label text="Timer : 0" name="TimerText" style="color: rgb(255, 255, 255); width: auto; top: auto; align-items: auto; align-self: flex-start; font-size: 12px; -unity-font-style: bold; -unity-text-align: middle-center; justify-content: flex-start; right: -282px; white-space: pre-wrap; position: relative; left: auto;"/>
+    <ui:Label text="Score : 0" name="ScoreText" style="color: rgb(255, 255, 255); width: auto; top: 0; align-items: auto; align-self: flex-start; font-size: 12px; -unity-font-style: bold; -unity-text-align: middle-center; justify-content: flex-start; position: absolute; left: 0;"/>
+    <ui:Label text="COMBO&#10;" name="ComboText" style="color: rgb(255, 255, 255); width: auto; top: 96px; align-items: auto; align-self: flex-start; font-size: 12px; -unity-font-style: bold; -unity-text-align: middle-center; justify-content: flex-start; position: absolute; left: 140px;"/>
+</ui:UXML>
