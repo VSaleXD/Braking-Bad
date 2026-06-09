@@ -6,8 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TesScene.unity
+    path: Assets/Scenes/MenuScene.unity
+    guid: e0e385502686db5469b4928691ee17b5
+  - enabled: 1
+    path: Assets/Scenes/ChaseTheUFO.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/CarSoccer.unity
+    guid: a7d0ab64a71f4c243a0a0d34f665d49c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
