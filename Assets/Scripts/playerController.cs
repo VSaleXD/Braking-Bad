@@ -17,7 +17,9 @@ public class playerController : MonoBehaviour
     [SerializeField] private float driftSteerLag = 0.5f;
 
     [Header("Wall Bouncing")]
-    [SerializeField] private float wallBounceMultiplier = 1.02f;
+    // FIX: nilai di atas 1.0 bikin mobil makin cepat tiap kena dinding.
+    // Pakai nilai 0.4-0.7 untuk pantulan yang masuk akal.
+    [SerializeField] private float wallBounceMultiplier = 0.5f;
     [SerializeField] private PhysicsMaterial2D wallBounceMaterial;
     [SerializeField] private string wallTag = "Wall";
 
@@ -25,7 +27,6 @@ public class playerController : MonoBehaviour
     public GameObject explosionEffect;
     [SerializeField] public bool isDestroyed = false;
 
-    // Properti Publik yang bisa dibaca oleh skrip WheelTrailHandler
     public bool IsDrifting { get; private set; }
 
     private Rigidbody2D rb;
@@ -33,27 +34,18 @@ public class playerController : MonoBehaviour
     private TournamentPlayerAgent tournamentAgent;
     private Vector2 lastVelocity;
 
+    // FIX: flag agar bounce tidak dipanggil dua kali dalam satu collision
+    private bool hasBounced = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         carCollider = GetComponent<Collider2D>();
-    
+
         if (carCollider != null && wallBounceMaterial != null)
         {
             carCollider.sharedMaterial = wallBounceMaterial;
         }
-    }
-
-    float getLateralvelocity()
-    {
-        return Vector2.Dot(transform.right, rb.linearVelocity);
-    }
-
-    public bool isTireScreeching(out float lateralVelocity, out bool isDrifting)
-    {
-        lateralVelocity = getLateralvelocity();
-        isDrifting = Mathf.Abs(lateralVelocity) > driftTrailThreshold;
-        return isDrifting;
     }
 
     void Start()
@@ -64,22 +56,44 @@ public class playerController : MonoBehaviour
         }
     }
 
+    float getLateralVelocity()
+    {
+        return Vector2.Dot(transform.right, rb.linearVelocity);
+    }
+
+    public bool isTireScreeching(out float lateralVelocity, out bool isDrifting)
+    {
+        lateralVelocity = getLateralVelocity();
+        isDrifting = Mathf.Abs(lateralVelocity) > driftTrailThreshold;
+        return isDrifting;
+    }
+
     void FixedUpdate()
     {
         if (Keyboard.current != null && Keyboard.current.spaceKey.isPressed)
         {
             movementEnabled = true;
         }
+
+        // FIX: simpan velocity SEBELUM physics update, bukan sesudah
+        // supaya nilai lastVelocity selalu valid saat collision terjadi
+        lastVelocity = rb.linearVelocity;
+
         if (movementEnabled)
         {
             movePlayer();
         }
+
         killOrthogonalVelocity();
+
+        // Reset bounce flag setiap physics frame
+        hasBounced = false;
     }
 
     void movePlayer()
     {
         if (Camera.main == null) return;
+        if (Mouse.current == null) return;
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         mousePos.z = 0f;
@@ -94,30 +108,39 @@ public class playerController : MonoBehaviour
         }
 
         Vector2 targetDirection = mousePos - transform.position;
+
         if (Mathf.Abs(steeringMultiplier) > 0.001f && steeringMultiplier < 0f)
         {
-            Vector3 mirroredMouse = transform.position + new Vector3(-(mousePos.x - transform.position.x), mousePos.y - transform.position.y, 0f);
+            Vector3 mirroredMouse = transform.position + new Vector3(
+                -(mousePos.x - transform.position.x),
+                mousePos.y - transform.position.y,
+                0f
+            );
             targetDirection = mirroredMouse - transform.position;
         }
 
-        Vector2 directionToMouse = targetDirection.normalized;
-
-        // Rotate Player
-        float distanceToMouse = Vector2.Distance(mousePos, transform.position);
-        if (distanceToMouse > 0.5f)
+        // FIX: threshold rotate diturunkan dari 0.5 ke 0.1
+        // supaya rotate tetap jalan meski mouse dekat dengan mobil
+        float distanceToMouse = targetDirection.magnitude;
+        if (distanceToMouse > 0.1f)
         {
-            float speedT = Mathf.Clamp01(rb.linearVelocity.magnitude / driftTrailThreshold);
+            Vector2 directionToMouse = targetDirection.normalized;
+
+            float speedT = Mathf.Clamp01(rb.linearVelocity.magnitude / Mathf.Max(maxSpeed, 0.01f));
             float effectiveRotationSpeed = Mathf.Lerp(rotaionSpeed, rotaionSpeed * driftSteerLag, speedT);
+
             float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg - 90f;
             Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
-            
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, effectiveRotationSpeed * Mathf.Abs(steeringMultiplier) * Time.fixedDeltaTime);
+
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                effectiveRotationSpeed * Mathf.Abs(steeringMultiplier) * Time.fixedDeltaTime
+            );
         }
 
         rb.AddForce(transform.up * (thrustforce * throttleMultiplier));
-        lastVelocity = rb.linearVelocity;
 
-        // Membatasi kecepatan maksimum
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
@@ -135,13 +158,12 @@ public class playerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // NOTED: Deteksi tabrakan UFO dipindah ke skrip UFO actor bawaan mode agar rapi!
-
-        if (ShouldBounceOnCollision(collision))
+        if (ShouldBounceOnCollision(collision) && !hasBounced)
         {
             BounceOffCollision(collision);
+            hasBounced = true;
         }
-        
+
         if (isDestroyed)
         {
             if (explosionEffect != null)
@@ -156,7 +178,9 @@ public class playerController : MonoBehaviour
     {
         if (collision == null || rb == null) return false;
 
-        if (!string.IsNullOrWhiteSpace(wallTag) && collision.collider != null && collision.collider.CompareTag(wallTag))
+        if (!string.IsNullOrWhiteSpace(wallTag) &&
+            collision.collider != null &&
+            collision.collider.CompareTag(wallTag))
         {
             return true;
         }
@@ -169,7 +193,17 @@ public class playerController : MonoBehaviour
         if (collision.contactCount == 0 || rb == null) return;
 
         Vector2 normal = collision.GetContact(0).normal;
-        Vector2 bouncedVelocity = Vector2.Reflect(lastVelocity.sqrMagnitude > 0.0001f ? lastVelocity : rb.linearVelocity, normal) * wallBounceMultiplier;
+
+        // FIX: gunakan lastVelocity yang disimpan di awal FixedUpdate
+        // agar nilai selalu valid dan tidak nol
+        Vector2 velocityToReflect = lastVelocity.sqrMagnitude > 0.01f
+            ? lastVelocity
+            : rb.linearVelocity;
+
+        // FIX: clamp hasil bounce agar tidak melebihi maxSpeed
+        Vector2 bouncedVelocity = Vector2.Reflect(velocityToReflect, normal) * wallBounceMultiplier;
+        bouncedVelocity = Vector2.ClampMagnitude(bouncedVelocity, maxSpeed);
+
         rb.linearVelocity = bouncedVelocity;
     }
 }
