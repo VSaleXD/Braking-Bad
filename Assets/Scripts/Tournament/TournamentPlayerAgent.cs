@@ -2,10 +2,8 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// Lightweight participant adapter for a player vehicle.
     /// Attach this to each car so minigames can identify the player and manipulate basic state.
-    /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class TournamentPlayerAgent : MonoBehaviour

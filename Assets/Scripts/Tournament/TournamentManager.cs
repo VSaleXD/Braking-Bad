@@ -5,10 +5,8 @@ using UnityEngine.SceneManagement;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// Persistent tournament state machine that selects the 3 minigames, tracks tournament points,
     /// and advances the scene flow after each match resolves.
-    /// </summary>
     public sealed class TournamentManager : MonoBehaviour
     {
         public static TournamentManager Instance { get; private set; }

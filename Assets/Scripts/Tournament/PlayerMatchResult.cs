@@ -2,9 +2,7 @@ using System;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// Snapshot hasil performa seorang pemain pada satu minigame.
-    /// </summary>
     [Serializable]
     public sealed class PlayerMatchResult
     {

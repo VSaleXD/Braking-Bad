@@ -2,9 +2,7 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// Put this on player vehicles so contact with the target can swap the spotlight.
-    /// </summary>
     public sealed class ContactRelay : MonoBehaviour
     {
         [SerializeField] private Minigame_Spotlight manager;

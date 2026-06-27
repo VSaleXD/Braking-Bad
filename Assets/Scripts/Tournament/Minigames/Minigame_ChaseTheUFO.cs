@@ -59,7 +59,6 @@ namespace BrakingBad.Gameplay
 
         private Vector3 GetSpawnPositionInsideBorder()
         {
-            // Fallback ke tengah scene jika border tidak di-assign
             if (borderCollider == null)
             {
                 Debug.LogWarning("[ChaseTheUFO] borderCollider belum di-assign! UFO spawn di tengah.");

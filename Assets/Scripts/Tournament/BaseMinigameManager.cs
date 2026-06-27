@@ -5,9 +5,7 @@ using UnityEngine.UIElements;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// Shared minigame loop: local countdown timer, UI Toolkit score/timer display, and result handoff.
-    /// </summary>
     public abstract class BaseMinigameManager : MonoBehaviour
     {
         [Header("Match Clock")]

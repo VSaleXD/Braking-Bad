@@ -229,7 +229,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.01
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a57820c1570819b4583aefc1a33e7c91, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -277,9 +277,6 @@ MonoBehaviour:
   driftFactor: 0.95
   driftTrailThreshold: 1.5
   driftSteerLag: 0.5
-  wallBounceMultiplier: 0.5
-  wallBounceMaterial: {fileID: 0}
-  wallTag: Wall
   explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}
   isDestroyed: 0
 --- !u!114 &1775870116755206482

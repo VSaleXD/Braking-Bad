@@ -16,11 +16,6 @@ public class playerController : MonoBehaviour
     public float driftTrailThreshold = 1.5f;
     [SerializeField] private float driftSteerLag = 0.5f;
 
-    [Header("Wall Bouncing")]
-    [SerializeField] private float wallBounceMultiplier = 0.5f;
-    [SerializeField] private PhysicsMaterial2D wallBounceMaterial;
-    [SerializeField] private string wallTag = "Wall";
-
     [Header("Effects & Destructions")]
     public GameObject explosionEffect;
     [SerializeField] public bool isDestroyed = false;
@@ -31,17 +26,11 @@ public class playerController : MonoBehaviour
     private Collider2D carCollider;
     private TournamentPlayerAgent tournamentAgent;
     private Vector2 lastVelocity;
-    private bool hasBounced = false;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         carCollider = GetComponent<Collider2D>();
-
-        if (carCollider != null && wallBounceMaterial != null)
-        {
-            carCollider.sharedMaterial = wallBounceMaterial;
-        }
     }
 
     void Start()
@@ -74,7 +63,6 @@ public class playerController : MonoBehaviour
         }
 
         killOrthogonalVelocity();
-        hasBounced = false;
     }
 
     // Mapping keyboard split 4 pemain:
@@ -131,7 +119,6 @@ public class playerController : MonoBehaviour
             transform.Rotate(0f, 0f, -rotationDelta);
         }
 
-        // FIX: auto-throttle, mobil selalu didorong maju tanpa input gas
         rb.AddForce(transform.up * (thrustforce * throttleMultiplier));
 
         if (rb.linearVelocity.magnitude > maxSpeed)
@@ -148,14 +135,9 @@ public class playerController : MonoBehaviour
 
         IsDrifting = Mathf.Abs(Vector2.Dot(rb.linearVelocity, transform.right)) > driftTrailThreshold;
     }
-
+    
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (ShouldBounceOnCollision(collision) && !hasBounced)
-        {
-            BounceOffCollision(collision);
-            hasBounced = true;
-        }
 
         if (isDestroyed)
         {
@@ -165,35 +147,5 @@ public class playerController : MonoBehaviour
             }
             Destroy(gameObject);
         }
-    }
-
-    private bool ShouldBounceOnCollision(Collision2D collision)
-    {
-        if (collision == null || rb == null) return false;
-
-        if (!string.IsNullOrWhiteSpace(wallTag) &&
-            collision.collider != null &&
-            collision.collider.CompareTag(wallTag))
-        {
-            return true;
-        }
-
-        return collision.rigidbody == null;
-    }
-
-    private void BounceOffCollision(Collision2D collision)
-    {
-        if (collision.contactCount == 0 || rb == null) return;
-
-        Vector2 normal = collision.GetContact(0).normal;
-
-        Vector2 velocityToReflect = lastVelocity.sqrMagnitude > 0.01f
-            ? lastVelocity
-            : rb.linearVelocity;
-
-        Vector2 bouncedVelocity = Vector2.Reflect(velocityToReflect, normal) * wallBounceMultiplier;
-        bouncedVelocity = Vector2.ClampMagnitude(bouncedVelocity, maxSpeed);
-
-        rb.linearVelocity = bouncedVelocity;
     }
 }
