@@ -3,12 +3,13 @@ using UnityEngine.Rendering.Universal;
 
 namespace BrakingBad.Gameplay
 {
-    /// Dark map, glowing target, and score-over-time until the target is bumped.
+    /// Dark map, glowing target, dan score-over-time sampai target ditabrak.
+    /// Setiap mobil punya headlight individual (PlayerHeadlight); mobil target
+    /// dapat headlight yang lebih besar/terang.
     public sealed class Minigame_Spotlight : BaseMinigameManager
     {
         [SerializeField] private float targetScorePerSecond = 5f;
         [SerializeField] private Light2D ambientLight;
-        [SerializeField] private Light2D targetLight;
         [SerializeField] private GameObject targetAuraPrefab;
 
         private int currentTargetPlayerID = 1;
@@ -72,9 +73,15 @@ namespace BrakingBad.Gameplay
                 ambientLight.intensity = 0.15f;
             }
 
-            if (targetLight != null)
+            foreach (TournamentPlayerAgent agent in FindObjectsByType<TournamentPlayerAgent>(FindObjectsSortMode.None))
             {
-                targetLight.intensity = 1.5f;
+                if (agent == null) continue;
+
+                PlayerHeadlight headlight = agent.GetComponent<PlayerHeadlight>();
+                if (headlight != null)
+                {
+                    headlight.SetAsTarget(agent.PlayerID == currentTargetPlayerID);
+                }
             }
 
             if (currentAuraInstance != null)
