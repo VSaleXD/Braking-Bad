@@ -2,8 +2,6 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// Lightweight participant adapter for a player vehicle.
-    /// Attach this to each car so minigames can identify the player and manipulate basic state.
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody2D))]
     public sealed class TournamentPlayerAgent : MonoBehaviour
@@ -16,6 +14,9 @@ namespace BrakingBad.Gameplay
         [Header("Control Modifiers")]
         public float steeringMultiplier = 1f;
         public float throttleMultiplier = 1f;
+
+        [Header("Elimination Effect")]
+        [SerializeField] private GameObject splashEffectPrefab;
 
         public int PlayerID => playerID;
         public int TeamIndex => teamIndex;
@@ -47,6 +48,56 @@ namespace BrakingBad.Gameplay
         {
             isEliminated = eliminated;
         }
+        public void EliminateWithSplash()
+        {
+            SetEliminated(true);
+
+            if (splashEffectPrefab != null)
+            {
+                Instantiate(splashEffectPrefab, transform.position, Quaternion.identity);
+            }
+
+            playerController controller = GetComponent<playerController>();
+            if (controller != null)
+            {
+                controller.movementEnabled = false;
+            }
+
+            if (cachedRigidbody != null)
+            {
+                cachedRigidbody.linearVelocity = Vector2.zero;
+                cachedRigidbody.angularVelocity = 0f;
+                cachedRigidbody.simulated = false;
+            }
+
+            SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer renderer in renderers)
+            {
+                renderer.enabled = false;
+            }
+        }
+public void ResetForNewMatch()
+{
+    SetEliminated(false);
+
+    playerController controller = GetComponent<playerController>();
+    if (controller != null)
+    {
+        controller.movementEnabled = true;
+    }
+
+    if (cachedRigidbody != null)
+    {
+        cachedRigidbody.simulated = true;
+    }
+
+    SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
+    foreach (SpriteRenderer renderer in renderers)
+    {
+        renderer.enabled = true;
+    }
+}
+    
 
         public void SetControlMultipliers(float steering, float throttle)
         {

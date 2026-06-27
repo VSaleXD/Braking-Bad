@@ -5,7 +5,7 @@ using BrakingBad.Gameplay;
 public class playerController : MonoBehaviour
 {
     [Header("Movement State")]
-    public bool movementEnabled = true; 
+    public bool movementEnabled = true;
     public float maxSpeed = 10f;
     public float thrustforce = 5f;
     public float rotaionSpeed = 200f;
@@ -16,6 +16,21 @@ public class playerController : MonoBehaviour
     public float driftTrailThreshold = 1.5f;
     [SerializeField] private float driftSteerLag = 0.5f;
 
+    [Header("Chaos / Oversteer")]
+    [SerializeField] private float oversteerBuildupDelay = 0.4f;
+    [SerializeField] private float oversteerGainRate = 1.5f;
+    [SerializeField] private float maxOversteerMultiplier = 2.2f;
+    [SerializeField] private float oversteerJitterStrength = 15f;
+
+    [Header("Anti Spin-Lock Safety")]
+    [SerializeField] private float unwantedSpinThreshold = 120f;
+    [SerializeField] private float spinLockGraceTime = 0.1f;
+    [SerializeField] private float spinLockDamping = 0.3f;
+
+    [Header("Collision Spin Damping")]
+    [Tooltip("Kelipatan angularVelocity yang dipertahankan tepat saat collision (0 = langsung 0, 1 = tidak diredam)")]
+    [SerializeField, Range(0f, 1f)] private float collisionSpinRetention = 0.2f;
+
     [Header("Effects & Destructions")]
     public GameObject explosionEffect;
     [SerializeField] public bool isDestroyed = false;
@@ -25,7 +40,10 @@ public class playerController : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D carCollider;
     private TournamentPlayerAgent tournamentAgent;
-    private Vector2 lastVelocity;
+
+    private float steerHeldTime = 0f;
+    private float currentOversteerMultiplier = 1f;
+    private float unwantedSpinTimer = 0f;
 
     void Awake()
     {
@@ -55,18 +73,15 @@ public class playerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        lastVelocity = rb.linearVelocity;
-
         if (movementEnabled)
         {
             movePlayer();
         }
 
+        ApplyAntiSpinLockSafety();
         killOrthogonalVelocity();
     }
 
-    // Mapping keyboard split 4 pemain:
-    // P1: A/D | P2: Arrow Left/Right | P3: J/L | P4: Numpad4/Numpad6
     private float GetSteerInput()
     {
         if (Keyboard.current == null) return 0f;
@@ -110,12 +125,22 @@ public class playerController : MonoBehaviour
             throttleMultiplier = tournamentAgent.throttleMultiplier;
         }
 
+        UpdateOversteerBuildup(steerInput);
+
         if (Mathf.Abs(steerInput) > 0.01f)
         {
             float speedT = Mathf.Clamp01(rb.linearVelocity.magnitude / Mathf.Max(maxSpeed, 0.01f));
             float effectiveRotationSpeed = Mathf.Lerp(rotaionSpeed, rotaionSpeed * driftSteerLag, speedT);
+            effectiveRotationSpeed *= currentOversteerMultiplier;
 
             float rotationDelta = steerInput * steeringMultiplier * effectiveRotationSpeed * Time.fixedDeltaTime;
+
+            if (currentOversteerMultiplier > 1.3f)
+            {
+                float jitter = (Random.value - 0.5f) * 2f * oversteerJitterStrength * Time.fixedDeltaTime;
+                rotationDelta += jitter * Mathf.Sign(steerInput);
+            }
+
             transform.Rotate(0f, 0f, -rotationDelta);
         }
 
@@ -127,6 +152,31 @@ public class playerController : MonoBehaviour
         }
     }
 
+    private void UpdateOversteerBuildup(float steerInput)
+    {
+        float speedRatio = Mathf.Clamp01(rb.linearVelocity.magnitude / Mathf.Max(maxSpeed, 0.01f));
+        bool isSteeringHard = Mathf.Abs(steerInput) > 0.01f && speedRatio > 0.5f;
+
+        if (isSteeringHard)
+        {
+            steerHeldTime += Time.fixedDeltaTime;
+
+            if (steerHeldTime > oversteerBuildupDelay)
+            {
+                float buildupTime = steerHeldTime - oversteerBuildupDelay;
+                currentOversteerMultiplier = 1f + Mathf.Min(
+                    buildupTime * oversteerGainRate,
+                    maxOversteerMultiplier - 1f
+                );
+            }
+        }
+        else
+        {
+            steerHeldTime = Mathf.Max(0f, steerHeldTime - Time.fixedDeltaTime * 2f);
+            currentOversteerMultiplier = Mathf.Lerp(currentOversteerMultiplier, 1f, Time.fixedDeltaTime * 3f);
+        }
+    }
+
     void killOrthogonalVelocity()
     {
         Vector2 forwardVelocity = transform.up * Vector2.Dot(rb.linearVelocity, transform.up);
@@ -135,9 +185,36 @@ public class playerController : MonoBehaviour
 
         IsDrifting = Mathf.Abs(Vector2.Dot(rb.linearVelocity, transform.right)) > driftTrailThreshold;
     }
-    
+
+    private void ApplyAntiSpinLockSafety()
+    {
+        float steerInput = GetSteerInput();
+        bool playerIsSteering = Mathf.Abs(steerInput) > 0.01f;
+        float angularSpeed = Mathf.Abs(rb.angularVelocity);
+
+        bool suspectedSpinLock = !playerIsSteering && angularSpeed > unwantedSpinThreshold;
+
+        if (suspectedSpinLock)
+        {
+            unwantedSpinTimer += Time.fixedDeltaTime;
+
+            if (unwantedSpinTimer > spinLockGraceTime)
+            {
+                rb.angularVelocity *= spinLockDamping;
+            }
+        }
+        else
+        {
+            unwantedSpinTimer = 0f;
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (rb != null)
+        {
+            rb.angularVelocity *= collisionSpinRetention;
+        }
 
         if (isDestroyed)
         {

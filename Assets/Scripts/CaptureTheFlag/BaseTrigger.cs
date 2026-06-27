@@ -6,8 +6,6 @@ namespace BrakingBad.Gameplay
     public sealed class BaseTrigger : MonoBehaviour
     {
         [SerializeField] private Minigame_CaptureTheFlag manager;
-        [SerializeField] private int teamIndex;
-
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (manager == null || other == null)
@@ -20,11 +18,7 @@ namespace BrakingBad.Gameplay
             {
                 return;
             }
-
-            if (agent.TeamIndex == teamIndex)
-            {
-                manager.CaptureFlag(agent);
-            }
+            manager.CaptureFlag(agent);
         }
     }
 }

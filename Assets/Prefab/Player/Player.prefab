@@ -116,7 +116,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 5
+  m_Time: 2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -258,6 +258,7 @@ MonoBehaviour:
   isEliminated: 0
   steeringMultiplier: 1
   throttleMultiplier: 1
+  splashEffectPrefab: {fileID: 3235623593233952705, guid: f09e1a669544f6446a2f7704d51f32a7, type: 3}
 --- !u!114 &5098990190778753012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,7 +277,15 @@ MonoBehaviour:
   rotaionSpeed: 200
   driftFactor: 0.95
   driftTrailThreshold: 1.5
-  driftSteerLag: 0.5
+  driftSteerLag: 1
+  oversteerBuildupDelay: 0.4
+  oversteerGainRate: 1.5
+  maxOversteerMultiplier: 2.2
+  oversteerJitterStrength: 15
+  unwantedSpinThreshold: 120
+  spinLockGraceTime: 0.1
+  spinLockDamping: 0.3
+  collisionSpinRetention: 0.2
   explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}
   isDestroyed: 0
 --- !u!114 &1775870116755206482
@@ -372,7 +381,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 5
+  m_Time: 2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -680,7 +689,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 5
+  m_Time: 2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -822,7 +831,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Time: 5
+  m_Time: 2
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3

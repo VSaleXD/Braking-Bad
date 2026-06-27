@@ -381,7 +381,7 @@ TilemapCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: ae4425e91c5b9a14a830b44bd7a08547, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2248,9 +2248,7 @@ MonoBehaviour:
   ufoPrefab: {fileID: 2864454950302752850, guid: 1a9bede223e710c4bb347716dc16f4b9, type: 3}
   spawnInterval: 2
   maxActiveUfos: 3
-  minLaunchForce: 500
-  maxLaunchForce: 1000
-  hitReward: 100
+  borderCollider: {fileID: 1468637840}
 --- !u!4 &1402641173 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5857422427430893418, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
@@ -2427,7 +2425,7 @@ Transform:
   m_GameObject: {fileID: 1482331863}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.3310256, y: 5.6202497, z: -10}
+  m_LocalPosition: {x: 7.371931, y: 5.62026, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2906,6 +2904,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UFO
       objectReference: {fileID: 0}
+    - target: {fileID: 6142330168028088714, guid: 1a9bede223e710c4bb347716dc16f4b9, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: a57820c1570819b4583aefc1a33e7c91, type: 2}
     - target: {fileID: 6310025591882405066, guid: 1a9bede223e710c4bb347716dc16f4b9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.57

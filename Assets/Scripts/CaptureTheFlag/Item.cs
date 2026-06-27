@@ -2,15 +2,12 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// Flag item that can be attached to a vehicle roof, dropped, or reset.
     public sealed class Item : MonoBehaviour
     {
         [SerializeField] private Vector3 carryLocalOffset = new Vector3(0f, 1.15f, 0f);
         [SerializeField] private float dropForwardOffset = 0.5f;
         
-        // PERBAIKAN 1: Mengubah nama variabel menjadi rb2D agar tidak konflik dengan properti bawaan Unity
-        [SerializeField] private Rigidbody2D rb2D;
-
+        private Rigidbody2D rb2D;
         private Minigame_CaptureTheFlag manager;
         private Transform originalParent;
         private Vector3 originalLocalPosition;
@@ -23,10 +20,7 @@ namespace BrakingBad.Gameplay
             originalParent = transform.parent;
             originalLocalPosition = transform.localPosition;
 
-            if (rb2D == null)
-            {
-                rb2D = GetComponent<Rigidbody2D>();
-            }
+            rb2D = GetComponent<Rigidbody2D>();
         }
 
         public void Initialize(Minigame_CaptureTheFlag owner)
@@ -91,7 +85,6 @@ namespace BrakingBad.Gameplay
         {
             if (collision == null || collision.collider == null) return;
 
-            // PERBAIKAN 2: Proteksi ekstra pengecekan null untuk mencegah bug NullReferenceException
             if (Carrier == null)
             {
                 TournamentPlayerAgent freePickupAgent = collision.collider.GetComponentInParent<TournamentPlayerAgent>();

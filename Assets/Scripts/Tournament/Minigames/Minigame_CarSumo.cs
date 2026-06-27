@@ -17,7 +17,7 @@ namespace BrakingBad.Gameplay
 
             foreach (TournamentPlayerAgent agent in GetRegisteredPlayers())
             {
-                agent.SetEliminated(false);
+                agent.ResetForNewMatch();
             }
         }
 
@@ -30,7 +30,7 @@ namespace BrakingBad.Gameplay
 
             int eliminationOrder = eliminatedPlayers.Count;
             eliminatedPlayers.Add(agent.PlayerID);
-            agent.SetEliminated(true);
+            agent.EliminateWithSplash();
             SetGameplayScore(agent.PlayerID, eliminationOrder);
         }
 

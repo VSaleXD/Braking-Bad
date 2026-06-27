@@ -5,14 +5,18 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// Survival arena with falling hazards and continuous survival scoring.
+    /// Survival arena dengan mobil polisi yang menyebrang dari tepi ke tepi
+    /// berlawanan, dan continuous survival scoring.
     public sealed class Minigame_ObstacleSurvival : BaseMinigameManager
     {
         [Header("Hazards")]
-        [SerializeField] private GameObject[] hazardPrefabs;
-        [SerializeField] private Transform[] spawnPoints;
+        [SerializeField] private GameObject policeCarPrefab;
         [SerializeField] private float spawnInterval = 2f;
         [SerializeField] private float hazardLifetime = 8f;
+        [SerializeField] private float hazardMoveSpeed = 8f;
+
+        [Header("Arena")]
+        [SerializeField] private CircleCollider2D arenaBoundary;
 
         [Header("Scoring")]
         [SerializeField] private float survivalPointsPerTick = 5f;
@@ -53,12 +57,12 @@ namespace BrakingBad.Gameplay
                 return;
             }
 
-            AddGameplayScore(agent.PlayerID, -collisionPenalty, "Ouch!");
+            AddGameplayScore(agent.PlayerID, -collisionPenalty, "BUSTED!");
 
             if (eliminateOnCollision)
             {
                 eliminatedPlayers.Add(agent.PlayerID);
-                agent.SetEliminated(true);
+                agent.EliminateWithSplash();
             }
         }
 
@@ -66,7 +70,7 @@ namespace BrakingBad.Gameplay
         {
             while (true)
             {
-                SpawnHazard();
+                SpawnPoliceCar();
                 yield return new WaitForSeconds(Mathf.Max(0.1f, spawnInterval));
             }
         }
@@ -87,24 +91,32 @@ namespace BrakingBad.Gameplay
             }
         }
 
-        private void SpawnHazard()
+        private void SpawnPoliceCar()
         {
-            if (hazardPrefabs == null || hazardPrefabs.Length == 0)
+            if (policeCarPrefab == null || arenaBoundary == null)
             {
+                Debug.LogWarning("[ObstacleSurvival] policeCarPrefab atau arenaBoundary belum di-assign.");
                 return;
             }
 
-            GameObject prefab = hazardPrefabs[Random.Range(0, hazardPrefabs.Length)];
-            if (prefab == null)
+            Vector2 center = arenaBoundary.transform.position;
+            float radius = arenaBoundary.radius * arenaBoundary.transform.lossyScale.x;
+
+            float randomAngle = Random.Range(0f, Mathf.PI * 2f);
+            Vector2 spawnDirection = new Vector2(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle));
+
+            Vector2 spawnPos = center + spawnDirection * (radius + 1.5f);
+
+            Vector2 moveDirection = (center - spawnDirection * radius) - spawnPos;
+
+            GameObject hazardInstance = Instantiate(policeCarPrefab, spawnPos, Quaternion.identity);
+
+            PoliceCarHazard hazardScript = hazardInstance.GetComponent<PoliceCarHazard>();
+            if (hazardScript != null)
             {
-                return;
+                hazardScript.Initialize(this, moveDirection);
             }
 
-            Transform spawnPoint = spawnPoints != null && spawnPoints.Length > 0
-                ? spawnPoints[Random.Range(0, spawnPoints.Length)]
-                : transform;
-
-            GameObject hazardInstance = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
             Destroy(hazardInstance, hazardLifetime);
         }
     }
