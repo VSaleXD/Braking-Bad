@@ -2,9 +2,7 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// 2v2 soccer variant: goals award 100 points to every member of the scoring team.
-    /// </summary>
     public sealed class Minigame_CarSoccer : BaseMinigameManager
     {
         [SerializeField] private float goalReward = 100f;
@@ -20,9 +18,4 @@ namespace BrakingBad.Gameplay
             }
         }
     }
-
-    /// <summary>
-    /// Put this on left/right goal trigger colliders and point it at the soccer manager.
-    /// </summary>
-
 }

@@ -187,9 +187,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5857422427430893418}
   - component: {fileID: 5669144373273209371}
-  - component: {fileID: 8753569338904462157}
-  - component: {fileID: 2591894994752036421}
-  - component: {fileID: 2428403255977375369}
+  - component: {fileID: 3441427181316787115}
+  - component: {fileID: 5098990190778753012}
+  - component: {fileID: 1775870116755206482}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -240,43 +240,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &8753569338904462157
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4392015073190137517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaf55c4f4a40d2a439b0e978a20a7ec2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::playerController
-  movementEnabled: 0
-  maxSpeed: 50
-  thrustforce: 10
-  rotaionSpeed: 200
-  driftFactor: 0.95
-  driftTrailThreshold: 1.5
-  driftSteerLag: 0.5
-  wallBounceMultiplier: 1.02
-  wallBounceMaterial: {fileID: 0}
-  wallTag: Wall
-  explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}
-  isDestroyed: 0
---- !u!114 &2591894994752036421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4392015073190137517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a75539d09bf2a934f8990e2c1bea2f24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WheelTrailHandler
---- !u!114 &2428403255977375369
+--- !u!114 &3441427181316787115
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,6 +258,42 @@ MonoBehaviour:
   isEliminated: 0
   steeringMultiplier: 1
   throttleMultiplier: 1
+--- !u!114 &5098990190778753012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4392015073190137517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaf55c4f4a40d2a439b0e978a20a7ec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::playerController
+  movementEnabled: 1
+  maxSpeed: 10
+  thrustforce: 5
+  rotaionSpeed: 200
+  driftFactor: 0.95
+  driftTrailThreshold: 1.5
+  driftSteerLag: 0.5
+  wallBounceMultiplier: 0.5
+  wallBounceMaterial: {fileID: 0}
+  wallTag: Wall
+  explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}
+  isDestroyed: 0
+--- !u!114 &1775870116755206482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4392015073190137517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a75539d09bf2a934f8990e2c1bea2f24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::wheelTrail
 --- !u!1 &5076739283033498891
 GameObject:
   m_ObjectHideFlags: 0

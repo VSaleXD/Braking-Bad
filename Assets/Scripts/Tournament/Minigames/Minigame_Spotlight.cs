@@ -3,9 +3,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// Dark map, glowing target, and score-over-time until the target is bumped.
-    /// </summary>
     public sealed class Minigame_Spotlight : BaseMinigameManager
     {
         [SerializeField] private float targetScorePerSecond = 5f;
@@ -94,34 +92,6 @@ namespace BrakingBad.Gameplay
             {
                 currentAuraInstance = Instantiate(targetAuraPrefab, targetAgent.transform);
                 currentAuraInstance.transform.localPosition = Vector3.zero;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Put this on player vehicles so contact with the target can swap the spotlight.
-    /// </summary>
-    public sealed class SpotlightContactRelay : MonoBehaviour
-    {
-        [SerializeField] private Minigame_Spotlight manager;
-        private TournamentPlayerAgent cachedAgent;
-
-        private void Awake()
-        {
-            cachedAgent = GetComponentInParent<TournamentPlayerAgent>();
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (manager == null || cachedAgent == null)
-            {
-                return;
-            }
-
-            TournamentPlayerAgent otherAgent = collision.collider.GetComponentInParent<TournamentPlayerAgent>();
-            if (otherAgent != null && otherAgent != cachedAgent)
-            {
-                manager.TrySwapTarget(cachedAgent);
             }
         }
     }

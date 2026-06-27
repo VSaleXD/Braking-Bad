@@ -3,15 +3,13 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// Linked teleporter race with safe momentum-preserving movement and arrival-sequence scoring.
-    /// </summary>
     public sealed class Minigame_PortalRush : BaseMinigameManager
     {
         [System.Serializable]
         public sealed class PortalLink
         {
-            public PortalRushTeleportTrigger entrance;
+            public TeleportTrigger entrance;
             public Transform destination;
             public int sequenceIndex;
         }
@@ -69,30 +67,6 @@ namespace BrakingBad.Gameplay
             globalArrivalOrder++;
             AddGameplayScore(agent.PlayerID, sequenceScore, $"Portal {sequenceIndex + 1}");
             return true;
-        }
-    }
-
-    /// <summary>
-    /// Attach this to each portal entrance trigger.
-    /// </summary>
-    public sealed class PortalRushTeleportTrigger : MonoBehaviour
-    {
-        [SerializeField] private Minigame_PortalRush manager;
-        [SerializeField] private Transform destination;
-        [SerializeField] private int sequenceIndex;
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (manager == null || other == null)
-            {
-                return;
-            }
-
-            TournamentPlayerAgent agent = other.GetComponentInParent<TournamentPlayerAgent>();
-            if (agent != null)
-            {
-                manager.TryTeleportPlayer(agent, destination, sequenceIndex);
-            }
         }
     }
 }

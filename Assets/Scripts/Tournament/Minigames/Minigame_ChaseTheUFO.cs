@@ -69,7 +69,6 @@ namespace BrakingBad.Gameplay
             Bounds bounds = borderCollider.bounds;
 
             // Coba random point di dalam bounds, maksimal 30 percobaan
-            // OverlapPoint memastikan titik benar-benar di dalam polygon
             for (int i = 0; i < 30; i++)
             {
                 Vector2 candidate = new Vector2(

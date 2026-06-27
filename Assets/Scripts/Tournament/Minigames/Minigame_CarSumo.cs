@@ -4,9 +4,7 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// Circle arena elimination mode. The first car out scores 0, the survivor gets the highest score.
-    /// </summary>
     public sealed class Minigame_CarSumo : BaseMinigameManager
     {
         [SerializeField] private float survivorBonus = 3f;
@@ -47,28 +45,6 @@ namespace BrakingBad.Gameplay
             }
 
             return base.CollectFinalScores();
-        }
-    }
-
-    /// <summary>
-    /// Put this on the circle boundary trigger collider.
-    /// </summary>
-    public sealed class CarSumoArenaBoundaryTrigger : MonoBehaviour
-    {
-        [SerializeField] private Minigame_CarSumo manager;
-
-        private void OnTriggerExit2D(Collider2D other)
-        {
-            if (manager == null || other == null)
-            {
-                return;
-            }
-
-            TournamentPlayerAgent agent = other.GetComponentInParent<TournamentPlayerAgent>();
-            if (agent != null)
-            {
-                manager.HandleArenaExit(agent);
-            }
         }
     }
 }

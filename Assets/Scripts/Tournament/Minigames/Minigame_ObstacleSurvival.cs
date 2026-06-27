@@ -5,9 +5,7 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// Survival arena with falling hazards and continuous survival scoring.
-    /// </summary>
     public sealed class Minigame_ObstacleSurvival : BaseMinigameManager
     {
         [Header("Hazards")]
@@ -108,28 +106,6 @@ namespace BrakingBad.Gameplay
 
             GameObject hazardInstance = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
             Destroy(hazardInstance, hazardLifetime);
-        }
-    }
-
-    /// <summary>
-    /// Put this on a hazard prefab so it can notify the survival manager on impact.
-    /// </summary>
-    public sealed class ObstacleHazard : MonoBehaviour
-    {
-        [SerializeField] private Minigame_ObstacleSurvival manager;
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (manager == null)
-            {
-                return;
-            }
-
-            TournamentPlayerAgent agent = collision.collider.GetComponentInParent<TournamentPlayerAgent>();
-            if (agent != null)
-            {
-                manager.HandleHazardCollision(agent);
-            }
         }
     }
 }

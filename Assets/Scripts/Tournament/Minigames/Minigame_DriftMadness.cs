@@ -3,9 +3,7 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// <summary>
     /// Procedural checkpoint minigame: players earn score from checkpoint progress, speed, and remaining time.
-    /// </summary>
     public class Minigame_DriftMadness : BaseMinigameManager
     {
         [SerializeField] private float checkpointBaseScore = 15f;
@@ -50,29 +48,6 @@ namespace BrakingBad.Gameplay
 
             AddGameplayScore(agent.PlayerID, checkpointScore, $"Checkpoint {checkpointIndex + 1}");
             return true;
-        }
-    }
-
-    /// <summary>
-    /// Trigger placed on each checkpoint collider.
-    /// </summary>
-    public sealed class DriftMadnessCheckpointTrigger : MonoBehaviour
-    {
-        [SerializeField] private Minigame_DriftMadness manager;
-        [SerializeField] private int checkpointIndex;
-
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (manager == null || other == null)
-            {
-                return;
-            }
-
-            TournamentPlayerAgent agent = other.GetComponentInParent<TournamentPlayerAgent>();
-            if (agent != null)
-            {
-                manager.TryRegisterCheckpoint(agent, checkpointIndex);
-            }
         }
     }
 }

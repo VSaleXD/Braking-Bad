@@ -5,7 +5,7 @@ using BrakingBad.Gameplay;
 public class playerController : MonoBehaviour
 {
     [Header("Movement State")]
-    public bool movementEnabled = false;
+    public bool movementEnabled = true; 
     public float maxSpeed = 10f;
     public float thrustforce = 5f;
     public float rotaionSpeed = 200f;
@@ -17,8 +17,6 @@ public class playerController : MonoBehaviour
     [SerializeField] private float driftSteerLag = 0.5f;
 
     [Header("Wall Bouncing")]
-    // FIX: nilai di atas 1.0 bikin mobil makin cepat tiap kena dinding.
-    // Pakai nilai 0.4-0.7 untuk pantulan yang masuk akal.
     [SerializeField] private float wallBounceMultiplier = 0.5f;
     [SerializeField] private PhysicsMaterial2D wallBounceMaterial;
     [SerializeField] private string wallTag = "Wall";
@@ -33,8 +31,6 @@ public class playerController : MonoBehaviour
     private Collider2D carCollider;
     private TournamentPlayerAgent tournamentAgent;
     private Vector2 lastVelocity;
-
-    // FIX: flag agar bounce tidak dipanggil dua kali dalam satu collision
     private bool hasBounced = false;
 
     void Awake()
@@ -56,11 +52,6 @@ public class playerController : MonoBehaviour
         }
     }
 
-    float getLateralVelocity()
-    {
-        return Vector2.Dot(transform.right, rb.linearVelocity);
-    }
-
     public bool isTireScreeching(out float lateralVelocity, out bool isDrifting)
     {
         lateralVelocity = getLateralVelocity();
@@ -68,15 +59,13 @@ public class playerController : MonoBehaviour
         return isDrifting;
     }
 
+    float getLateralVelocity()
+    {
+        return Vector2.Dot(transform.right, rb.linearVelocity);
+    }
+
     void FixedUpdate()
     {
-        if (Keyboard.current != null && Keyboard.current.spaceKey.isPressed)
-        {
-            movementEnabled = true;
-        }
-
-        // FIX: simpan velocity SEBELUM physics update, bukan sesudah
-        // supaya nilai lastVelocity selalu valid saat collision terjadi
         lastVelocity = rb.linearVelocity;
 
         if (movementEnabled)
@@ -85,18 +74,44 @@ public class playerController : MonoBehaviour
         }
 
         killOrthogonalVelocity();
-
-        // Reset bounce flag setiap physics frame
         hasBounced = false;
+    }
+
+    // Mapping keyboard split 4 pemain:
+    // P1: A/D | P2: Arrow Left/Right | P3: J/L | P4: Numpad4/Numpad6
+    private float GetSteerInput()
+    {
+        if (Keyboard.current == null) return 0f;
+
+        int playerID = tournamentAgent != null ? tournamentAgent.PlayerID : 1;
+        float steer = 0f;
+
+        switch (playerID)
+        {
+            case 1:
+                if (Keyboard.current.aKey.isPressed) steer -= 1f;
+                if (Keyboard.current.dKey.isPressed) steer += 1f;
+                break;
+            case 2:
+                if (Keyboard.current.leftArrowKey.isPressed) steer -= 1f;
+                if (Keyboard.current.rightArrowKey.isPressed) steer += 1f;
+                break;
+            case 3:
+                if (Keyboard.current.jKey.isPressed) steer -= 1f;
+                if (Keyboard.current.lKey.isPressed) steer += 1f;
+                break;
+            case 4:
+                if (Keyboard.current.numpad4Key.isPressed) steer -= 1f;
+                if (Keyboard.current.numpad6Key.isPressed) steer += 1f;
+                break;
+        }
+
+        return steer;
     }
 
     void movePlayer()
     {
-        if (Camera.main == null) return;
-        if (Mouse.current == null) return;
-
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        mousePos.z = 0f;
+        float steerInput = GetSteerInput();
 
         float steeringMultiplier = 1f;
         float throttleMultiplier = 1f;
@@ -107,38 +122,16 @@ public class playerController : MonoBehaviour
             throttleMultiplier = tournamentAgent.throttleMultiplier;
         }
 
-        Vector2 targetDirection = mousePos - transform.position;
-
-        if (Mathf.Abs(steeringMultiplier) > 0.001f && steeringMultiplier < 0f)
+        if (Mathf.Abs(steerInput) > 0.01f)
         {
-            Vector3 mirroredMouse = transform.position + new Vector3(
-                -(mousePos.x - transform.position.x),
-                mousePos.y - transform.position.y,
-                0f
-            );
-            targetDirection = mirroredMouse - transform.position;
-        }
-
-        // FIX: threshold rotate diturunkan dari 0.5 ke 0.1
-        // supaya rotate tetap jalan meski mouse dekat dengan mobil
-        float distanceToMouse = targetDirection.magnitude;
-        if (distanceToMouse > 0.1f)
-        {
-            Vector2 directionToMouse = targetDirection.normalized;
-
             float speedT = Mathf.Clamp01(rb.linearVelocity.magnitude / Mathf.Max(maxSpeed, 0.01f));
             float effectiveRotationSpeed = Mathf.Lerp(rotaionSpeed, rotaionSpeed * driftSteerLag, speedT);
 
-            float angle = Mathf.Atan2(directionToMouse.y, directionToMouse.x) * Mathf.Rad2Deg - 90f;
-            Quaternion targetRotation = Quaternion.Euler(0f, 0f, angle);
-
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation,
-                targetRotation,
-                effectiveRotationSpeed * Mathf.Abs(steeringMultiplier) * Time.fixedDeltaTime
-            );
+            float rotationDelta = steerInput * steeringMultiplier * effectiveRotationSpeed * Time.fixedDeltaTime;
+            transform.Rotate(0f, 0f, -rotationDelta);
         }
 
+        // FIX: auto-throttle, mobil selalu didorong maju tanpa input gas
         rb.AddForce(transform.up * (thrustforce * throttleMultiplier));
 
         if (rb.linearVelocity.magnitude > maxSpeed)
@@ -194,13 +187,10 @@ public class playerController : MonoBehaviour
 
         Vector2 normal = collision.GetContact(0).normal;
 
-        // FIX: gunakan lastVelocity yang disimpan di awal FixedUpdate
-        // agar nilai selalu valid dan tidak nol
         Vector2 velocityToReflect = lastVelocity.sqrMagnitude > 0.01f
             ? lastVelocity
             : rb.linearVelocity;
 
-        // FIX: clamp hasil bounce agar tidak melebihi maxSpeed
         Vector2 bouncedVelocity = Vector2.Reflect(velocityToReflect, normal) * wallBounceMultiplier;
         bouncedVelocity = Vector2.ClampMagnitude(bouncedVelocity, maxSpeed);
 
