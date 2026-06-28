@@ -19,6 +19,7 @@ namespace BrakingBad.Gameplay
         [SerializeField] protected string comboTextName = "ComboText";
 
         protected float matchTimer = 90f;
+        private bool isMatchStarted = false;
 
         private readonly Dictionary<int, float> playerScores = new Dictionary<int, float>(4)
         {
@@ -44,15 +45,14 @@ namespace BrakingBad.Gameplay
         {
             CacheUI();
 
-            if (autoStartMatch)
-            {
-                BeginMatch();
-            }
+            matchTimer = matchDuration;
+            UpdateTimerUI();
+            isMatchStarted = false;
         }
 
         protected virtual void Update()
         {
-            if (matchComplete)
+            if (matchComplete || !isMatchStarted)
             {
                 return;
             }
@@ -66,6 +66,11 @@ namespace BrakingBad.Gameplay
             }
         }
 
+        public void StartMinigameMatch()
+        {
+            isMatchStarted = true;
+            BeginMatch();
+        }
         public void BeginMatch()
         {
             CachePlayerAgents();

@@ -606,8 +606,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 56540e7310df41840aed84c0ac8edba5, type: 2}
+  m_sharedMaterial: {fileID: 6287241499016200318, guid: 56540e7310df41840aed84c0ac8edba5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -722,7 +722,7 @@ MonoBehaviour:
   - Spotlight
   - CaptureTheFlag
   finalPodiumSceneName: FinalPodium
-  autoBeginTournament: 1
+  autoBeginTournament: 0
   activePlayerCount: 4
 --- !u!4 &1152703753
 Transform:

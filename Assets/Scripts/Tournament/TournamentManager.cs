@@ -14,16 +14,13 @@ namespace BrakingBad.Gameplay
         [Header("Tournament Setup")]
         [SerializeField] private List<string> minigamePool = new List<string>
         {
-            "Minigame_CarSoccer",
-            "Minigame_DriftMadness",
-            "Minigame_ObstacleSurvival",
-            "Minigame_CarSumo",
-            "Minigame_ChaseTheUFO",
-            "Minigame_PortalRush",
-            "Minigame_FloorIsLava",
-            "Minigame_Spotlight",
-            "Minigame_CaptureTheFlag",
-            "Minigame_MirrorDimension"
+            "CarSoccer",
+            "ObstacleSurvival",
+            "CarSumo",
+            "ChaseTheUFO",
+            "FloorIsLava",
+            "Spotlight",
+            "CaptureTheFlag",
         };
 
         [SerializeField] private string finalPodiumSceneName = "FinalPodium";
@@ -79,16 +76,13 @@ namespace BrakingBad.Gameplay
             {
                 minigamePool.AddRange(new[]
                 {
-                    "Minigame_CarSoccer",
-                    "Minigame_DriftMadness",
-                    "Minigame_ObstacleSurvival",
-                    "Minigame_CarSumo",
-                    "Minigame_ChaseTheUFO",
-                    "Minigame_PortalRush",
-                    "Minigame_FloorIsLava",
-                    "Minigame_Spotlight",
-                    "Minigame_CaptureTheFlag",
-                    "Minigame_MirrorDimension"
+                    "CarSoccer",
+                    "ObstacleSurvival",
+                    "CarSumo",
+                    "ChaseTheUFO",
+                    "FloorIsLava",
+                    "Spotlight",
+                    "CaptureTheFlag",
                 });
             }
         }
