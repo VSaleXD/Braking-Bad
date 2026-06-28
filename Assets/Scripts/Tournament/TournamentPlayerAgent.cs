@@ -31,6 +31,12 @@ namespace BrakingBad.Gameplay
             {
                 cachedRigidbody = GetComponent<Rigidbody2D>();
             }
+
+            if (TournamentManager.Instance != null && playerID > TournamentManager.Instance.ActivePlayerCount)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
         }
 
         private void OnValidate()

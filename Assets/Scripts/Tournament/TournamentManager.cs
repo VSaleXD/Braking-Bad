@@ -29,6 +29,9 @@ namespace BrakingBad.Gameplay
         [SerializeField] private string finalPodiumSceneName = "FinalPodiumScene";
         [SerializeField] private bool autoBeginTournament = false;
 
+        [Header("Player Count")]
+        [SerializeField, Range(2, 4)] private int activePlayerCount = 4;
+
         private readonly List<string> selectedMinigames = new List<string>(3);
         private readonly int[] tournamentPoints = new int[4];
         private int currentMatchIndex;
@@ -37,6 +40,7 @@ namespace BrakingBad.Gameplay
         public IReadOnlyList<string> SelectedMinigames => selectedMinigames;
         public IReadOnlyList<int> TournamentPoints => tournamentPoints;
         public int CurrentMatchIndex => currentMatchIndex;
+        public int ActivePlayerCount => activePlayerCount;
 
         private void Awake()
         {
@@ -114,6 +118,12 @@ namespace BrakingBad.Gameplay
             selectionReady = true;
             return new List<string>(selectedMinigames);
         }
+        public void SetPlayerCountAndBegin(int playerCount)
+        {
+            activePlayerCount = Mathf.Clamp(playerCount, 2, 4);
+            ResetTournamentPoints();
+            BeginTournament();
+        }
 
         public void BeginTournament()
         {
@@ -185,6 +195,7 @@ namespace BrakingBad.Gameplay
             }
 
             return scoreByPlayer
+                .Where(pair => pair.Key <= activePlayerCount)
                 .Select(pair => new PlayerMatchResult(pair.Key, pair.Value))
                 .OrderByDescending(result => result.gameplayScore)
                 .ThenBy(result => result.playerID)
