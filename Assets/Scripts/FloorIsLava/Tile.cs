@@ -1,20 +1,41 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// Attach this to each tile in the grid. The tile cracks, then disappears, after a short delay.
     public sealed class Tile : MonoBehaviour
     {
+        public enum TileState
+        {
+            Safe,
+            Crack1,
+            Crack2,
+            Lava
+        }
+
         [SerializeField] private Minigame_FloorIsLava manager;
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private Collider2D tileCollider;
-        [SerializeField] private Color crackedTint = new Color(0.8f, 0.5f, 0.2f, 1f);
-        [SerializeField] private float crackDelay = 0.35f;
-        [SerializeField] private float collapseDelay = 0.45f;
 
-        private bool isCracking;
+        [Header("State Sprites")]
+        [SerializeField] private Sprite safeSprite;
+        [SerializeField] private Sprite crack1Sprite;
+        [SerializeField] private Sprite crack2Sprite;
+        [SerializeField] private Sprite lavaSprite;
+
+        [Header("Timing")]
+        [Tooltip("Durasi dari Safe ke Crack1, sejak pertama diinjak")]
+        [SerializeField] private float timeToReachCrack1 = 0.5f;
+        [Tooltip("Durasi dari Crack1 ke Crack2")]
+        [SerializeField] private float timeToReachCrack2 = 0.4f;
+        [Tooltip("Durasi dari Crack2 ke Lava (collapse)")]
+        [SerializeField] private float timeToReachLava = 0.35f;
+
+        private TileState currentState = TileState.Safe;
+        private bool sequenceStarted;
+
+        private readonly HashSet<TournamentPlayerAgent> agentsOnTile = new HashSet<TournamentPlayerAgent>();
 
         private void Awake()
         {
@@ -27,53 +48,107 @@ namespace BrakingBad.Gameplay
             {
                 tileCollider = GetComponent<Collider2D>();
             }
+
+            ApplyStateVisual(TileState.Safe);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (manager == null || isCracking)
+            if (manager == null)
             {
                 return;
             }
 
             TournamentPlayerAgent agent = other.GetComponentInParent<TournamentPlayerAgent>();
-            if (agent != null)
-            {
-                manager.RegisterTileTrigger(this, agent);
-            }
-        }
-
-        public void BeginCrackSequence()
-        {
-            if (isCracking)
+            if (agent == null)
             {
                 return;
             }
 
-            StartCoroutine(CrackRoutine());
+            agentsOnTile.Add(agent);
+            manager.RegisterTileTrigger(this, agent);
+
+            if (!sequenceStarted)
+            {
+                sequenceStarted = true;
+                StartCoroutine(StateSequenceRoutine());
+            }
         }
 
-        private IEnumerator CrackRoutine()
+        private void OnTriggerExit2D(Collider2D other)
         {
-            isCracking = true;
-            yield return new WaitForSeconds(crackDelay);
-
-            if (spriteRenderer != null)
+            TournamentPlayerAgent agent = other.GetComponentInParent<TournamentPlayerAgent>();
+            if (agent != null)
             {
-                spriteRenderer.color = crackedTint;
+                agentsOnTile.Remove(agent);
+            }
+        }
+
+        private IEnumerator StateSequenceRoutine()
+        {
+            yield return new WaitForSeconds(timeToReachCrack1);
+            SetState(TileState.Crack1);
+
+            yield return new WaitForSeconds(timeToReachCrack2);
+            SetState(TileState.Crack2);
+
+            yield return new WaitForSeconds(timeToReachLava);
+            SetState(TileState.Lava);
+
+            CollapseTile();
+        }
+
+        private void SetState(TileState newState)
+        {
+            currentState = newState;
+            ApplyStateVisual(newState);
+        }
+
+        private void ApplyStateVisual(TileState state)
+        {
+            if (spriteRenderer == null)
+            {
+                return;
             }
 
-            yield return new WaitForSeconds(collapseDelay);
+            switch (state)
+            {
+                case TileState.Safe:
+                    if (safeSprite != null) spriteRenderer.sprite = safeSprite;
+                    break;
+                case TileState.Crack1:
+                    if (crack1Sprite != null) spriteRenderer.sprite = crack1Sprite;
+                    break;
+                case TileState.Crack2:
+                    if (crack2Sprite != null) spriteRenderer.sprite = crack2Sprite;
+                    break;
+                case TileState.Lava:
+                    if (lavaSprite != null) spriteRenderer.sprite = lavaSprite;
+                    break;
+            }
+        }
+
+        private void CollapseTile()
+        {
+            if (manager != null)
+            {
+                foreach (TournamentPlayerAgent agent in agentsOnTile)
+                {
+                    if (agent != null)
+                    {
+                        manager.RegisterFallenPlayer(agent);
+                    }
+                }
+            }
+
+            agentsOnTile.Clear();
 
             if (tileCollider != null)
             {
                 tileCollider.enabled = false;
             }
 
-            if (spriteRenderer != null)
-            {
-                spriteRenderer.enabled = false;
-            }
+            // if (spriteRenderer != null) spriteRenderer.enabled = false;
         }
     }
 }

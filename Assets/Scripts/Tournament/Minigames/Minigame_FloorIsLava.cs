@@ -41,19 +41,17 @@ namespace BrakingBad.Gameplay
             {
                 AddGameplayScore(agent.PlayerID, tileTriggerBonus, "Crack!");
             }
-
-            tile.BeginCrackSequence();
         }
 
         public void RegisterFallenPlayer(TournamentPlayerAgent agent)
         {
-            if (agent == null)
+            if (agent == null || fallenPlayers.Contains(agent.PlayerID))
             {
                 return;
             }
 
             fallenPlayers.Add(agent.PlayerID);
-            agent.SetEliminated(true);
+            agent.EliminateWithSplash();
         }
 
         private IEnumerator SurvivalScoreRoutine()
