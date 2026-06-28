@@ -15,7 +15,10 @@ namespace BrakingBad.Gameplay
         {
             StartTournamentWithPlayerCount(4);
         }
-
+        public void BackToMenu()
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Menu");
+        }
         private void StartTournamentWithPlayerCount(int playerCount)
         {
             if (TournamentManager.Instance == null)

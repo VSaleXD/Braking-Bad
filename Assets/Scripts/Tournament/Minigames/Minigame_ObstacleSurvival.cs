@@ -13,8 +13,6 @@ namespace BrakingBad.Gameplay
         [SerializeField] private GameObject policeCarPrefab;
         [SerializeField] private float spawnInterval = 2f;
         [SerializeField] private float hazardLifetime = 8f;
-        [SerializeField] private float hazardMoveSpeed = 8f;
-
         [Header("Arena")]
         [SerializeField] private CircleCollider2D arenaBoundary;
 

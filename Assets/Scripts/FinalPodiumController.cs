@@ -71,7 +71,7 @@ namespace BrakingBad.Gameplay
 
             return Enumerable.Range(1, 4)
                 .Where(playerID => playerID <= activeCount)
-                .Select(playerID => (playerID, points[playerID - 1]))
+                .Select(playerID => (playerID: playerID, points: points[playerID - 1]))
                 .OrderByDescending(entry => entry.points)
                 .ThenBy(entry => entry.playerID)
                 .ToList();

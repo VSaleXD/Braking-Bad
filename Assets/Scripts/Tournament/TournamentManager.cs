@@ -26,7 +26,7 @@ namespace BrakingBad.Gameplay
             "Minigame_MirrorDimension"
         };
 
-        [SerializeField] private string finalPodiumSceneName = "FinalPodiumScene";
+        [SerializeField] private string finalPodiumSceneName = "FinalPodium";
         [SerializeField] private bool autoBeginTournament = false;
 
         [Header("Player Count")]
