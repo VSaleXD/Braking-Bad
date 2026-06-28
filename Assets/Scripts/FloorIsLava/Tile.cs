@@ -32,6 +32,15 @@ namespace BrakingBad.Gameplay
         [Tooltip("Durasi dari Crack2 ke Lava (collapse)")]
         [SerializeField] private float timeToReachLava = 0.35f;
 
+        [Header("Sounds")]
+        [Tooltip("Sound saat tile mulai retak (Crack1)")]
+        [SerializeField] private AudioClip crackSound;
+        [Tooltip("Sound saat tile collapse dan mobil jatuh ke lava")]
+        [SerializeField] private AudioClip lavaFallSound;
+        [SerializeField, Range(0f, 1f)] private float crackVolume = 1f;
+        [SerializeField, Range(0f, 1f)] private float lavaFallVolume = 1f;
+
+        private AudioSource audioSource;
         private TileState currentState = TileState.Safe;
         private bool sequenceStarted;
 
@@ -48,6 +57,16 @@ namespace BrakingBad.Gameplay
             {
                 tileCollider = GetComponent<Collider2D>();
             }
+
+            // ── Audio Source ──────────────────────────────────────────────
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource.playOnAwake = false;
+                audioSource.spatialBlend = 0f; // 2D sound
+            }
+            // ─────────────────────────────────────────────────────────────
 
             ApplyStateVisual(TileState.Safe);
         }
@@ -88,6 +107,13 @@ namespace BrakingBad.Gameplay
         {
             yield return new WaitForSeconds(timeToReachCrack1);
             SetState(TileState.Crack1);
+
+            // ── Sound Crack ───────────────────────────────────────────────
+            if (crackSound != null)
+            {
+                audioSource.PlayOneShot(crackSound, crackVolume);
+            }
+            // ─────────────────────────────────────────────────────────────
 
             yield return new WaitForSeconds(timeToReachCrack2);
             SetState(TileState.Crack2);
@@ -130,6 +156,13 @@ namespace BrakingBad.Gameplay
 
         private void CollapseTile()
         {
+            // ── Sound Lava Fall ───────────────────────────────────────────
+            if (lavaFallSound != null && agentsOnTile.Count > 0)
+            {
+                audioSource.PlayOneShot(lavaFallSound, lavaFallVolume);
+            }
+            // ─────────────────────────────────────────────────────────────
+
             if (manager != null)
             {
                 foreach (TournamentPlayerAgent agent in agentsOnTile)

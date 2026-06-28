@@ -11,6 +11,23 @@ namespace BrakingBad.Gameplay
         public GameObject ball;
         [SerializeField] private Transform ballResetPoint;
 
+        [Header("Goal Sound")]
+        [SerializeField] private AudioClip goalSound;
+        [SerializeField, Range(0f, 1f)] private float goalVolume = 1f;
+
+        private AudioSource audioSource;
+
+        void Awake()
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource.playOnAwake = false;
+                audioSource.spatialBlend = 0f; // 2D sound
+            }
+        }
+
         void ResetBall()
         {
             if (ball == null) return;
@@ -33,6 +50,13 @@ namespace BrakingBad.Gameplay
         {
             if (manager == null || other == null) return;
             if (!other.CompareTag(ballTag)) return;
+
+            // ── Goal Sound ────────────────────────────────────────────────
+            if (goalSound != null)
+            {
+                audioSource.PlayOneShot(goalSound, goalVolume);
+            }
+            // ─────────────────────────────────────────────────────────────
 
             manager.RegisterGoal(scoringTeamIndex);
             ResetBall();
