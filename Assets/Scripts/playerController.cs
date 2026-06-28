@@ -35,11 +35,37 @@ public class playerController : MonoBehaviour
     public GameObject explosionEffect;
     [SerializeField] public bool isDestroyed = false;
 
+    [Header("Crash Sound")]
+    [SerializeField] private AudioClip crashSound;
+    [Tooltip("Batas minimum impact speed agar suara crash berbunyi")]
+    [SerializeField] private float minImpactSpeedForSound = 2f;
+    [Tooltip("Volume suara crash (0-1)")]
+    [SerializeField, Range(0f, 1f)] private float crashVolume = 1f;
+    [Tooltip("Cooldown agar suara tidak spam saat collision beruntun (detik)")]
+    [SerializeField] private float crashSoundCooldown = 0.2f;
+
+    [Header("Engine Sound")]
+    [SerializeField] private AudioClip engineSound;
+    [Tooltip("Volume engine saat mobil diam (idle)")]
+    [SerializeField, Range(0f, 1f)] private float engineVolumeIdle = 0.08f;
+    [Tooltip("Volume engine saat kecepatan maksimum (tidak terlalu kencang)")]
+    [SerializeField, Range(0f, 1f)] private float engineVolumeMax = 0.25f;
+    [Tooltip("Pitch engine saat idle")]
+    [SerializeField, Range(0.5f, 2f)] private float enginePitchIdle = 0.8f;
+    [Tooltip("Pitch engine saat kecepatan maksimum")]
+    [SerializeField, Range(0.5f, 2f)] private float enginePitchMax = 1.4f;
+    [Tooltip("Seberapa cepat volume & pitch engine menyesuaikan kecepatan")]
+    [SerializeField] private float engineSmoothSpeed = 5f;
+
+    private AudioSource engineAudioSource;
+    private float lastCrashSoundTime = -999f;
+
     public bool IsDrifting { get; private set; }
 
     private Rigidbody2D rb;
     private Collider2D carCollider;
     private TournamentPlayerAgent tournamentAgent;
+    private AudioSource audioSource;
 
     private float steerHeldTime = 0f;
     private float currentOversteerMultiplier = 1f;
@@ -49,6 +75,22 @@ public class playerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         carCollider = GetComponent<Collider2D>();
+
+        // AudioSource untuk crash (PlayOneShot)
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.spatialBlend = 0f;
+        }
+
+        // AudioSource terpisah untuk engine (loop)
+        engineAudioSource = gameObject.AddComponent<AudioSource>();
+        engineAudioSource.playOnAwake = false;
+        engineAudioSource.spatialBlend = 0f;
+        engineAudioSource.loop = true;
+        engineAudioSource.priority = 128;
     }
 
     void Start()
@@ -56,6 +98,15 @@ public class playerController : MonoBehaviour
         if (tournamentAgent == null)
         {
             tournamentAgent = GetComponent<TournamentPlayerAgent>();
+        }
+
+        // Mulai engine sound jika ada clip
+        if (engineSound != null)
+        {
+            engineAudioSource.clip = engineSound;
+            engineAudioSource.volume = engineVolumeIdle;
+            engineAudioSource.pitch = enginePitchIdle;
+            engineAudioSource.Play();
         }
     }
 
@@ -80,6 +131,31 @@ public class playerController : MonoBehaviour
 
         ApplyAntiSpinLockSafety();
         killOrthogonalVelocity();
+    }
+
+    void Update()
+    {
+        UpdateEngineSound();
+    }
+
+    private void UpdateEngineSound()
+    {
+        if (engineSound == null || engineAudioSource == null) return;
+
+        // Hentikan engine jika mobil dinonaktifkan
+        if (!movementEnabled)
+        {
+            engineAudioSource.volume = Mathf.Lerp(engineAudioSource.volume, 0f, Time.deltaTime * engineSmoothSpeed);
+            return;
+        }
+
+        float speedRatio = Mathf.Clamp01(rb.linearVelocity.magnitude / Mathf.Max(maxSpeed, 0.01f));
+
+        float targetVolume = Mathf.Lerp(engineVolumeIdle, engineVolumeMax, speedRatio);
+        float targetPitch  = Mathf.Lerp(enginePitchIdle, enginePitchMax, speedRatio);
+
+        engineAudioSource.volume = Mathf.Lerp(engineAudioSource.volume, targetVolume, Time.deltaTime * engineSmoothSpeed);
+        engineAudioSource.pitch  = Mathf.Lerp(engineAudioSource.pitch,  targetPitch,  Time.deltaTime * engineSmoothSpeed);
     }
 
     private float GetSteerInput()
@@ -215,6 +291,18 @@ public class playerController : MonoBehaviour
         {
             rb.angularVelocity *= collisionSpinRetention;
         }
+
+        // ── Crash Sound ───────────────────────────────────────────────────
+        float impactSpeed = collision.relativeVelocity.magnitude;
+        bool cooldownReady = Time.time - lastCrashSoundTime >= crashSoundCooldown;
+
+        if (crashSound != null && impactSpeed >= minImpactSpeedForSound && cooldownReady)
+        {
+            float volumeScale = Mathf.Clamp01(impactSpeed / maxSpeed) * crashVolume;
+            audioSource.PlayOneShot(crashSound, volumeScale);
+            lastCrashSoundTime = Time.time;
+        }
+        // ─────────────────────────────────────────────────────────────────
 
         if (isDestroyed)
         {
