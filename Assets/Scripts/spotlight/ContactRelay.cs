@@ -11,6 +11,11 @@ namespace BrakingBad.Gameplay
         private void Awake()
         {
             cachedAgent = GetComponentInParent<TournamentPlayerAgent>();
+            
+            if (manager == null)
+            {
+                manager = FindFirstObjectByType<Minigame_Spotlight>();
+            }
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -21,9 +26,13 @@ namespace BrakingBad.Gameplay
             }
 
             TournamentPlayerAgent otherAgent = collision.collider.GetComponentInParent<TournamentPlayerAgent>();
+            
             if (otherAgent != null && otherAgent != cachedAgent)
             {
-                manager.TrySwapTarget(cachedAgent);
+                if (cachedAgent.PlayerID == manager.CurrentTargetPlayerID)
+                {
+                    manager.TrySwapTarget(otherAgent);
+                }
             }
         }
     }

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c487eb7ec2b03c14bb19992bc7552079
+guid: 7d43e7376aaf59f4fb9f437a1dad352f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8506908085363892406
-    second: Car Sumo BG_0
+      213: 4331600399573434859
+    second: car3new_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Car Sumo BG_0
+      name: car3new_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1920
-        height: 1080
+        width: 320
+        height: 670
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6b0630505db9e0670800000000000000
-      internalID: 8506908085363892406
+      spriteID: be1c3851d9fec1c30800000000000000
+      internalID: 4331600399573434859
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Car Sumo BG_0: 8506908085363892406
+      car3new_0: 4331600399573434859
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

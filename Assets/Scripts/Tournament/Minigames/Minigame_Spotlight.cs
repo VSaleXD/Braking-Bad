@@ -13,6 +13,7 @@ namespace BrakingBad.Gameplay
         [SerializeField] private GameObject targetAuraPrefab;
 
         private int currentTargetPlayerID = 1;
+        public int CurrentTargetPlayerID => currentTargetPlayerID;
         private GameObject currentAuraInstance;
 
         protected override void OnMatchStarted()
@@ -48,10 +49,10 @@ namespace BrakingBad.Gameplay
             {
                 return;
             }
-
+            int oldTargetID = currentTargetPlayerID;
             currentTargetPlayerID = attacker.PlayerID;
             ApplyLightingState();
-            ShowComboMessage($"Target changed to P{currentTargetPlayerID}");
+            ShowComboMessage($"P{attacker.PlayerID} STOLE THE SPOTLIGHT FROM P{oldTargetID}!");
         }
 
         private void ChooseInitialTarget()

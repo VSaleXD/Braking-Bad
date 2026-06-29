@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c487eb7ec2b03c14bb19992bc7552079
+guid: 4b6ca2189a9847841a57271eaf163b83
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8506908085363892406
-    second: Car Sumo BG_0
+      213: -80342176776371775
+    second: CarSumoBG-ezgif.com-gif-to-sprite-converter_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Car Sumo BG_0
+      name: CarSumoBG-ezgif.com-gif-to-sprite-converter_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1920
-        height: 1080
+        width: 9600
+        height: 2160
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6b0630505db9e0670800000000000000
-      internalID: 8506908085363892406
+      spriteID: 1c143c4473192eef0800000000000000
+      internalID: -80342176776371775
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Car Sumo BG_0: 8506908085363892406
+      CarSumoBG-ezgif.com-gif-to-sprite-converter_0: -80342176776371775
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
