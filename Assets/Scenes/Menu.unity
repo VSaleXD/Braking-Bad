@@ -562,7 +562,7 @@ MonoBehaviour:
   - ChaseTheUFO
   - FloorIsLava
   - CaptureTheFlag
-  - ObstacleSurvival
+  - PoliceChase
   finalPodiumSceneName: FinalPodium
   autoBeginTournament: 0
   activePlayerCount: 4

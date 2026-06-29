@@ -17,13 +17,13 @@ namespace BrakingBad.Gameplay
 
         private readonly Dictionary<string, (string title, string desc)> minigameInfo = new Dictionary<string, (string, string)>
         {
-            { "Car Soccer", ("CAR SOCCER", "Tabrak bola raksasa masuk ke gawang lawan untuk mencetak poin sebanyak-banyaknya!") },
-            { "Obstacle Survival", ("OBSTACLE SURVIVAL", "Hindari semua rintangan (hazard) yang berjatuhan. Bertahanlah paling lama!") },
-            { "Car Sumo", ("CAR SUMO", "Saling dorong keluar arena! Jangan biarkan mobilmu melewati batas lingkaran luar.") },
-            { "Chase the UFO", ("CHASE THE UFO", "Kejar UFO yang terbang bebas dan tabrak dia untuk mencuri poin!") },
-            { "Floor is Lava", ("FLOOR IS LAVA", "Lantai akan retak dan hancur! Teruslah bergerak dan jadilah yang terakhir selamat.") },
+            { "CarSoccer", ("CAR SOCCER", "Tabrak bola masuk ke gawang untuk mencetak poin sebanyak-banyaknya!") },
+            { "PoliceChase", ("POLICE CHASE", "Hindari semua mobil polisi yang datang. Bertahanlah paling lama!") },
+            { "CarSumo", ("CAR SUMO", "Saling dorong keluar arena! Jangan biarkan mobilmu melewati batas lingkaran luar.") },
+            { "ChaseTheUFO", ("CHASE THE UFO", "Kejar UFO yang terbang bebas dan tabrak dia untuk mencuri poin!") },
+            { "FloorIsLava", ("FLOOR IS LAVA", "Lantai akan retak dan hancur! Teruslah bergerak dan jadilah yang terakhir selamat.") },
             { "Spotlight", ("SPOTLIGHT", "REBUT LAMPU SOROT! Tabrak pemegang spotlight untuk mencuri poin per detik!") },
-            { "Capture the Flag", ("CAPTURE THE FLAG", "Ambil bendera di tengah dan bawa pulang ke markas timmu untuk poin besar.") }
+            { "CapturetheFlag", ("CAPTURE THE FLAG", "Ambil bendera dan bawa pulang ke tengah arena.") }
         };
 
         private void Start()
