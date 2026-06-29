@@ -73,3 +73,9 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+Assets/Audio/BuatUnity/ufosoundtrack.mp3.meta
+Assets/Audio/BuatUnity/tilecrack.mp3.meta
+Assets/Audio/BuatUnity/suaralava.wav.meta
+Assets/Audio/BuatUnity/spotlight.mp3.meta
+Assets/Audio/BuatUnity/soundtrackmenu.wav.meta
+Assets/Audio/BuatUnity/carengine.mp3.meta

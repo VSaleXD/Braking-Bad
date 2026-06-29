@@ -19,7 +19,8 @@ namespace BrakingBad.Gameplay
         [SerializeField] protected string comboTextName = "ComboText";
 
         protected float matchTimer = 90f;
-        private bool isMatchStarted = false;
+        protected bool isMatchStarted = false;
+        public bool IsMatchStarted => isMatchStarted;
 
         private readonly Dictionary<int, float> playerScores = new Dictionary<int, float>(4)
         {
@@ -270,7 +271,7 @@ namespace BrakingBad.Gameplay
             }
 
             int seconds = Mathf.CeilToInt(Mathf.Max(0f, matchTimer));
-            timerLabel.text = $"Time: {seconds:00}";
+            timerLabel.text = $"{seconds:00}";
         }
     }
 }

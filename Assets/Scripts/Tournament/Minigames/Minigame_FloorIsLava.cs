@@ -39,7 +39,7 @@ namespace BrakingBad.Gameplay
 
             if (!fallenPlayers.Contains(agent.PlayerID))
             {
-                AddGameplayScore(agent.PlayerID, tileTriggerBonus, "Crack!");
+                AddGameplayScore(agent.PlayerID, tileTriggerBonus, "");
             }
         }
 

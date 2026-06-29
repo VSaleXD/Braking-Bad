@@ -14,16 +14,15 @@ namespace BrakingBad.Gameplay
         [SerializeField] private TextMeshProUGUI descriptionText;
         [SerializeField] private TextMeshProUGUI countdownText;
 
-        // Kamus deskripsi untuk 7 minigame yang tersisa
         private readonly Dictionary<string, (string title, string desc)> minigameInfo = new Dictionary<string, (string, string)>
         {
-            { "Car Soccer", ("CAR SOCCER", "Tabrak bola raksasa masuk ke gawang lawan untuk mencetak poin sebanyak-banyaknya!") },
-            { "Obstacle Survival", ("OBSTACLE SURVIVAL", "Hindari semua mobil polisi yang berdatangan. Bertahanlah paling lama!") },
-            { "Car Sumo", ("CAR SUMO", "Saling dorong keluar arena! Jangan biarkan mobilmu melewati batas lingkaran luar.") },
-            { "Chase The UFO", ("CHASE THE UFO", "Kejar UFO yang terbang bebas dan tabrak dia untuk mendapat poin!") },
-            { "Floor Is Lava", ("FLOOR IS LAVA", "Lantai akan retak dan hancur! Teruslah bergerak dan jadilah yang terakhir selamat.") },
-            { "Spotlight", ("SPOTLIGHT", "Kejar mobil yang (spotlight) untuk mengumpulkan skor per detik. (seperti tag)") },
-            { "Capture The Flag", ("CAPTURE THE FLAG", "Ambil bendera di sekeliling arena dan bawa pulang ke tengah lingkaran") }
+            { "Minigame_CarSoccer", ("CAR SOCCER", "Tabrak bola raksasa masuk ke gawang lawan untuk mencetak poin sebanyak-banyaknya!") },
+            { "Minigame_ObstacleSurvival", ("OBSTACLE SURVIVAL", "Hindari semua rintangan (hazard) yang berjatuhan. Bertahanlah paling lama!") },
+            { "Minigame_CarSumo", ("CAR SUMO", "Saling dorong keluar arena! Jangan biarkan mobilmu melewati batas lingkaran luar.") },
+            { "Minigame_ChaseTheUFO", ("CHASE THE UFO", "Kejar UFO yang terbang bebas dan tabrak dia untuk mencuri poin!") },
+            { "Minigame_FloorIsLava", ("FLOOR IS LAVA", "Lantai akan retak dan hancur! Teruslah bergerak dan jadilah yang terakhir selamat.") },
+            { "Minigame_Spotlight", ("SPOTLIGHT", "Kejar dan diamlah di bawah lampu sorot (spotlight) untuk mengumpulkan skor per detik.") },
+            { "Minigame_CaptureTheFlag", ("CAPTURE THE FLAG", "Ambil bendera di tengah dan bawa pulang ke markas timmu untuk poin besar.") }
         };
 
         private void Start()
@@ -45,8 +44,7 @@ namespace BrakingBad.Gameplay
                 titleText.text = "MINIGAME MATCH";
                 descriptionText.text = "Kumpulkan poin tertinggi untuk memenangkan turnamen!";
             }
-
-            SetPlayersControl(false);
+            Time.timeScale = 0f; 
 
             StartCoroutine(IntroSequenceRoutine());
         }
@@ -56,34 +54,27 @@ namespace BrakingBad.Gameplay
             introPanel.SetActive(true);
             countdownText.text = "";
 
-            yield return new WaitForSeconds(3.5f);
+            yield return new WaitForSecondsRealtime(3.5f);
 
             countdownText.gameObject.SetActive(true);
             
-            countdownText.text = "3";
-            yield return new WaitForSeconds(1f);
-            
-            countdownText.text = "2";
-            yield return new WaitForSeconds(1f);
-            
-            countdownText.text = "1";
-            yield return new WaitForSeconds(1f);
+            countdownText.text = "3"; yield return new WaitForSecondsRealtime(1f);
+            countdownText.text = "2"; yield return new WaitForSecondsRealtime(1f);
+            countdownText.text = "1"; yield return new WaitForSecondsRealtime(1f);
             
             countdownText.text = "START!";
-            BaseMinigameManager minigameManager = FindObjectOfType<BaseMinigameManager>();
+            
+            Time.timeScale = 1f;
+
+            BaseMinigameManager minigameManager = FindFirstObjectByType<BaseMinigameManager>();
             if (minigameManager != null)
             {
-                minigameManager.StartMinigameMatch();
+                minigameManager.StartMinigameMatch(); 
             }
-            else
-            {
-                Debug.LogWarning("MinigameIntroUI: BaseMinigameManager tidak ditemukan di scene.");
-            }
-            
+
             SetPlayersControl(true);
             
-            yield return new WaitForSeconds(0.8f);
-
+            yield return new WaitForSecondsRealtime(0.8f);
             introPanel.SetActive(false);
         }
 
@@ -97,7 +88,6 @@ namespace BrakingBad.Gameplay
                 {
                     controller.movementEnabled = enabled;
                 }
-                
                 if (!enabled)
                 {
                     agent.ResetVelocity();
