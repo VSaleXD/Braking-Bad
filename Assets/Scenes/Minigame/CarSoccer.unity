@@ -415,7 +415,7 @@ PrefabInstance:
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: engineSound
       value: 
-      objectReference: {fileID: 8300000, guid: d66896f31a939eb41883952993a9090d, type: 3}
+      objectReference: {fileID: 8300000, guid: ec5a2fbe7082f0648b60a621a2bdf8e8, type: 3}
     - target: {fileID: 5336836010449176892, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -528,7 +528,7 @@ PrefabInstance:
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: engineSound
       value: 
-      objectReference: {fileID: 8300000, guid: d66896f31a939eb41883952993a9090d, type: 3}
+      objectReference: {fileID: 8300000, guid: ec5a2fbe7082f0648b60a621a2bdf8e8, type: 3}
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: thrustforce
       value: 10
@@ -3447,7 +3447,7 @@ Transform:
   m_GameObject: {fileID: 1482331863}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.346613, y: 5.6212897, z: -10}
+  m_LocalPosition: {x: 6.67, y: 5.62, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4034,7 +4034,7 @@ PrefabInstance:
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: engineSound
       value: 
-      objectReference: {fileID: 8300000, guid: d66896f31a939eb41883952993a9090d, type: 3}
+      objectReference: {fileID: 8300000, guid: ec5a2fbe7082f0648b60a621a2bdf8e8, type: 3}
     - target: {fileID: 5336836010449176892, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -4387,7 +4387,7 @@ PrefabInstance:
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: engineSound
       value: 
-      objectReference: {fileID: 8300000, guid: d66896f31a939eb41883952993a9090d, type: 3}
+      objectReference: {fileID: 8300000, guid: ec5a2fbe7082f0648b60a621a2bdf8e8, type: 3}
     - target: {fileID: 5336836010449176892, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: m_SortingOrder
       value: 1

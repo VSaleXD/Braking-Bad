@@ -451,7 +451,7 @@ PrefabInstance:
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: engineSound
       value: 
-      objectReference: {fileID: 8300000, guid: d66896f31a939eb41883952993a9090d, type: 3}
+      objectReference: {fileID: 8300000, guid: ec5a2fbe7082f0648b60a621a2bdf8e8, type: 3}
     - target: {fileID: 5857422427430893418, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12.82
@@ -565,7 +565,7 @@ PrefabInstance:
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: engineSound
       value: 
-      objectReference: {fileID: 8300000, guid: d66896f31a939eb41883952993a9090d, type: 3}
+      objectReference: {fileID: 8300000, guid: ec5a2fbe7082f0648b60a621a2bdf8e8, type: 3}
     - target: {fileID: 5857422427430893418, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.26
@@ -909,7 +909,7 @@ PrefabInstance:
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: engineSound
       value: 
-      objectReference: {fileID: 8300000, guid: d66896f31a939eb41883952993a9090d, type: 3}
+      objectReference: {fileID: 8300000, guid: ec5a2fbe7082f0648b60a621a2bdf8e8, type: 3}
     - target: {fileID: 5857422427430893418, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12.27
@@ -1437,7 +1437,7 @@ PrefabInstance:
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: engineSound
       value: 
-      objectReference: {fileID: 8300000, guid: d66896f31a939eb41883952993a9090d, type: 3}
+      objectReference: {fileID: 8300000, guid: ec5a2fbe7082f0648b60a621a2bdf8e8, type: 3}
     - target: {fileID: 5857422427430893418, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.18
@@ -1661,7 +1661,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 248cbbb0c07a7f6488d033de6beebca3, type: 3}
+  m_Resource: {fileID: 8300000, guid: 1303ea63b1be84a449c62aea0281c9f0, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.3
   m_Pitch: 1
