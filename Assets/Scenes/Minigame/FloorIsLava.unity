@@ -115543,7 +115543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c4b9dfa2218e34790bf2e1a921b85c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.Minigame_FloorIsLava
-  matchDuration: 90
+  matchDuration: 30
   autoStartMatch: 1
   uiDocument: {fileID: 2132111265}
   scoreTextName: ScoreText

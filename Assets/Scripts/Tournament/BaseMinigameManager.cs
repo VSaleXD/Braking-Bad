@@ -9,7 +9,7 @@ namespace BrakingBad.Gameplay
     public abstract class BaseMinigameManager : MonoBehaviour
     {
         [Header("Match Clock")]
-        [SerializeField] protected float matchDuration = 90f;
+        [SerializeField] protected float matchDuration = 30f;
         [SerializeField] protected bool autoStartMatch = true;
 
         [Header("UI Toolkit")]
@@ -57,14 +57,34 @@ namespace BrakingBad.Gameplay
             {
                 return;
             }
-
+            if(CheckAllPlayersEliminated())
+            {
+                matchTimer = 0f;
+                UpdateTimerUI();
+                CompleteMatch();
+                return;
+            }   
+            
             matchTimer -= Time.deltaTime;
             UpdateTimerUI();
 
             if (matchTimer <= 0f)
             {
+                matchTimer = 0f;
+                UpdateTimerUI();
                 CompleteMatch();
             }
+        }
+        private bool CheckAllPlayersEliminated()
+        {
+            foreach (TournamentPlayerAgent agent in GetRegisteredPlayers())
+            {
+                if (agent != null && !agent.IsEliminated)
+                {
+                    return false;
+                }
+            }
+            return true; 
         }
 
         public void StartMinigameMatch()

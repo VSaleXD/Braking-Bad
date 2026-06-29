@@ -13,21 +13,37 @@ namespace BrakingBad.Gameplay
         [SerializeField] private TextMeshProUGUI titleText;
         [SerializeField] private TextMeshProUGUI descriptionText;
         [SerializeField] private TextMeshProUGUI countdownText;
+        private bool isWaitingForInput = false;
 
         private readonly Dictionary<string, (string title, string desc)> minigameInfo = new Dictionary<string, (string, string)>
         {
-            { "Minigame_CarSoccer", ("CAR SOCCER", "Tabrak bola raksasa masuk ke gawang lawan untuk mencetak poin sebanyak-banyaknya!") },
-            { "Minigame_ObstacleSurvival", ("OBSTACLE SURVIVAL", "Hindari semua rintangan (hazard) yang berjatuhan. Bertahanlah paling lama!") },
-            { "Minigame_CarSumo", ("CAR SUMO", "Saling dorong keluar arena! Jangan biarkan mobilmu melewati batas lingkaran luar.") },
-            { "Minigame_ChaseTheUFO", ("CHASE THE UFO", "Kejar UFO yang terbang bebas dan tabrak dia untuk mencuri poin!") },
-            { "Minigame_FloorIsLava", ("FLOOR IS LAVA", "Lantai akan retak dan hancur! Teruslah bergerak dan jadilah yang terakhir selamat.") },
-            { "Minigame_Spotlight", ("SPOTLIGHT", "Kejar dan diamlah di bawah lampu sorot (spotlight) untuk mengumpulkan skor per detik.") },
-            { "Minigame_CaptureTheFlag", ("CAPTURE THE FLAG", "Ambil bendera di tengah dan bawa pulang ke markas timmu untuk poin besar.") }
+            { "Car Soccer", ("CAR SOCCER", "Tabrak bola raksasa masuk ke gawang lawan untuk mencetak poin sebanyak-banyaknya!") },
+            { "Obstacle Survival", ("OBSTACLE SURVIVAL", "Hindari semua rintangan (hazard) yang berjatuhan. Bertahanlah paling lama!") },
+            { "Car Sumo", ("CAR SUMO", "Saling dorong keluar arena! Jangan biarkan mobilmu melewati batas lingkaran luar.") },
+            { "Chase the UFO", ("CHASE THE UFO", "Kejar UFO yang terbang bebas dan tabrak dia untuk mencuri poin!") },
+            { "Floor is Lava", ("FLOOR IS LAVA", "Lantai akan retak dan hancur! Teruslah bergerak dan jadilah yang terakhir selamat.") },
+            { "Spotlight", ("SPOTLIGHT", "REBUT LAMPU SOROT! Tabrak pemegang spotlight untuk mencuri poin per detik!") },
+            { "Capture the Flag", ("CAPTURE THE FLAG", "Ambil bendera di tengah dan bawa pulang ke markas timmu untuk poin besar.") }
         };
 
         private void Start()
         {
             SetupIntro();
+        }
+
+        private void Update()
+        {
+            if (isWaitingForInput)
+            {
+                bool keyboardPressed = UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.anyKey.wasPressedThisFrame;
+                bool mousePressed = UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.wasPressedThisFrame;
+
+                if (keyboardPressed || mousePressed)
+                {
+                    isWaitingForInput = false;
+                    StartCoroutine(CountdownSequenceRoutine());
+                }
+            }
         }
 
         private void SetupIntro()
@@ -44,26 +60,32 @@ namespace BrakingBad.Gameplay
                 titleText.text = "MINIGAME MATCH";
                 descriptionText.text = "Kumpulkan poin tertinggi untuk memenangkan turnamen!";
             }
-            Time.timeScale = 0f; 
 
-            StartCoroutine(IntroSequenceRoutine());
+            if (countdownText != null) 
+            {
+                countdownText.gameObject.SetActive(false);
+            }
+
+            Time.timeScale = 0f; 
+            SetPlayersControl(false);
+
+            isWaitingForInput = true;
         }
 
-        private IEnumerator IntroSequenceRoutine()
+        private IEnumerator CountdownSequenceRoutine()
         {
-            introPanel.SetActive(true);
-            countdownText.text = "";
+            if (countdownText != null)
+            {
+                countdownText.gameObject.SetActive(true);
+                
+                countdownText.text = "3"; yield return new WaitForSecondsRealtime(1f);
+                countdownText.text = "2"; yield return new WaitForSecondsRealtime(1f);
+                countdownText.text = "1"; yield return new WaitForSecondsRealtime(1f);
+                
+                countdownText.text = "START!";
+            }
 
-            yield return new WaitForSecondsRealtime(3.5f);
 
-            countdownText.gameObject.SetActive(true);
-            
-            countdownText.text = "3"; yield return new WaitForSecondsRealtime(1f);
-            countdownText.text = "2"; yield return new WaitForSecondsRealtime(1f);
-            countdownText.text = "1"; yield return new WaitForSecondsRealtime(1f);
-            
-            countdownText.text = "START!";
-            
             Time.timeScale = 1f;
 
             BaseMinigameManager minigameManager = FindFirstObjectByType<BaseMinigameManager>();
@@ -71,7 +93,6 @@ namespace BrakingBad.Gameplay
             {
                 minigameManager.StartMinigameMatch(); 
             }
-
 
             SetPlayersControl(true);
             

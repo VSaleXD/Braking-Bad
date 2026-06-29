@@ -288,6 +288,16 @@ MonoBehaviour:
   collisionSpinRetention: 0.2
   explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}
   isDestroyed: 0
+  crashSound: {fileID: 0}
+  minImpactSpeedForSound: 2
+  crashVolume: 0.4
+  crashSoundCooldown: 0.2
+  engineSound: {fileID: 0}
+  engineVolumeIdle: 0.08
+  engineVolumeMax: 0.25
+  enginePitchIdle: 0.8
+  enginePitchMax: 1.4
+  engineSmoothSpeed: 5
 --- !u!114 &1775870116755206482
 MonoBehaviour:
   m_ObjectHideFlags: 0

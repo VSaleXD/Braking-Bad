@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Gamemode.unity
     guid: 2cc5352e688cac147b81a75101925b76
   - enabled: 1
+    path: Assets/Scenes/Garage.unity
+    guid: 166f5f03661fd8a47ad5775d46f1b5cc
+  - enabled: 1
     path: Assets/Scenes/Minigame/CaptureTheFlag.unity
     guid: 76a4deede05ef1c4a871e71f1ff0354c
   - enabled: 1

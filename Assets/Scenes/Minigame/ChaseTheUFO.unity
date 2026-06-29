@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f24926949bc2044784b0f704a13017c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.Minigame_ChaseTheUFO
-  matchDuration: 90
+  matchDuration: 30
   autoStartMatch: 1
   uiDocument: {fileID: 2132111265}
   scoreTextName: ScoreText

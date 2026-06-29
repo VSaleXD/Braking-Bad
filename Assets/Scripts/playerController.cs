@@ -180,8 +180,8 @@ public class playerController : MonoBehaviour
                 if (Keyboard.current.lKey.isPressed) steer += 1f;
                 break;
             case 4:
-                if (Keyboard.current.numpad4Key.isPressed) steer -= 1f;
-                if (Keyboard.current.numpad6Key.isPressed) steer += 1f;
+                if (Keyboard.current.uKey.isPressed) steer -= 1f;
+                if (Keyboard.current.oKey.isPressed) steer += 1f;
                 break;
         }
 

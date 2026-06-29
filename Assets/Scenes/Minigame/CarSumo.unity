@@ -85240,7 +85240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd9d7a03227e94448438cf24affc303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.Minigame_CarSumo
-  matchDuration: 90
+  matchDuration: 30
   autoStartMatch: 1
   uiDocument: {fileID: 2132111265}
   scoreTextName: ScoreText
