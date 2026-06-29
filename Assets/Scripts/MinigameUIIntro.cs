@@ -72,6 +72,7 @@ namespace BrakingBad.Gameplay
                 minigameManager.StartMinigameMatch(); 
             }
 
+
             SetPlayersControl(true);
             
             yield return new WaitForSecondsRealtime(0.8f);

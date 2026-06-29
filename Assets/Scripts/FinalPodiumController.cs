@@ -44,16 +44,30 @@ namespace BrakingBad.Gameplay
         [SerializeField] private string menuSceneName = "MenuBaru";
         [SerializeField] private GameObject continueButtonRoot;
 
-        private void Start()
-        {
-            if (continueButtonRoot != null)
-            {
-                continueButtonRoot.SetActive(false);
-            }
+private void Start()
+{
+    if (continueButtonRoot != null)
+    {
+        continueButtonRoot.SetActive(false);
+    }
 
-            List<(int playerID, int points)> ranking = BuildRanking();
-            StartCoroutine(RevealRoutine(ranking));
+    int activeCount = 4;
+    if (TournamentManager.Instance != null)
+    {
+        activeCount = TournamentManager.Instance.ActivePlayerCount;
+    }
+
+    for (int i = 0; i < podiumSlots.Count; i++)
+    {
+        if (i >= activeCount && podiumSlots[i].standTransform != null)
+        {
+            podiumSlots[i].standTransform.gameObject.SetActive(false); 
         }
+    }
+
+    List<(int playerID, int points)> ranking = BuildRanking();
+    StartCoroutine(RevealRoutine(ranking));
+}
 
         private List<(int playerID, int points)> BuildRanking()
         {
