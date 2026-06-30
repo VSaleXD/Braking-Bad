@@ -6,13 +6,12 @@ using UnityEngine.SceneManagement;
 
 namespace BrakingBad.Gameplay
 {
-
     public sealed class FinalPodiumController : MonoBehaviour
     {
         [System.Serializable]
         public sealed class PodiumSlot
         {
-            [Tooltip("Transform yang akan dipindah/dinaikkan untuk slot rank ini.")]
+            [Tooltip("Transform yang akan dipindah/dinaikkan untuk slot rank ini (podium pillar).")]
             public Transform standTransform;
 
             [Tooltip("Posisi awal (di bawah/tersembunyi) sebelum animasi mulai.")]
@@ -27,47 +26,81 @@ namespace BrakingBad.Gameplay
             [Tooltip("Label skor tournament, contoh: '7 pts'.")]
             public TMPro.TextMeshProUGUI pointsLabel;
 
-            [Tooltip("Opsional: ganti warna/sprite mobil sesuai playerID.")]
+            [Header("Car On Podium")]
+            [Tooltip("SpriteRenderer mobil yang ditaruh di atas podium ini.")]
             public SpriteRenderer carRenderer;
+
+            [Tooltip("Local position kosong/idle si car renderer sebelum dimunculkan (opsional, biasanya sama dengan posisi akhirnya, hanya alpha 0).")]
+            public bool bobCarWhileIdle = true;
         }
 
         [Header("Podium Slots (urut: Rank 1, Rank 2, Rank 3, Rank 4)")]
         [SerializeField] private List<PodiumSlot> podiumSlots = new List<PodiumSlot>(4);
 
-        [Header("Animation")]
+        [Header("Sprite Per Player (opsional, index 0 = Player 1)")]
+        [Tooltip("Kalau diisi, carRenderer.sprite akan diganti sesuai playerID pemenang slot ini.")]
+        [SerializeField] private Sprite[] carSpriteByPlayerIndex;
+
+        [Header("Animation - Rise")]
         [SerializeField] private float delayBeforeStart = 0.5f;
         [SerializeField] private float riseDuration = 0.6f;
         [SerializeField] private float delayBetweenSlots = 0.4f;
         [SerializeField] private AnimationCurve riseCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
+        [Header("Animation - Car Idle (muter/bobbing pelan setelah naik)")]
+        [SerializeField] private bool enableCarIdleAnimation = true;
+        [SerializeField] private float carBobAmplitude = 0.08f;
+        [SerializeField] private float carBobSpeed = 2f;
+        [SerializeField] private float carSpinDegreesPerSecond = 40f;
+
         [Header("Navigation")]
-        [SerializeField] private string menuSceneName = "MenuBaru";
         [SerializeField] private GameObject continueButtonRoot;
 
-private void Start()
-{
-    if (continueButtonRoot != null)
-    {
-        continueButtonRoot.SetActive(false);
-    }
+        private readonly List<Coroutine> idleRoutines = new List<Coroutine>();
 
-    int activeCount = 4;
-    if (TournamentManager.Instance != null)
-    {
-        activeCount = TournamentManager.Instance.ActivePlayerCount;
-    }
-
-    for (int i = 0; i < podiumSlots.Count; i++)
-    {
-        if (i >= activeCount && podiumSlots[i].standTransform != null)
+        private void Start()
         {
-            podiumSlots[i].standTransform.gameObject.SetActive(false); 
-        }
-    }
+           
+            if (continueButtonRoot != null)
+            {
+                continueButtonRoot.SetActive(true);
+            }
 
-    List<(int playerID, int points)> ranking = BuildRanking();
-    StartCoroutine(RevealRoutine(ranking));
-}
+            int activeCount = 4;
+            if (TournamentManager.Instance != null)
+            {
+                activeCount = TournamentManager.Instance.ActivePlayerCount;
+            }
+
+            for (int i = 0; i < podiumSlots.Count; i++)
+            {
+                if (i >= activeCount && podiumSlots[i].standTransform != null)
+                {
+                    podiumSlots[i].standTransform.gameObject.SetActive(false);
+                }
+            }
+
+            foreach (PodiumSlot slot in podiumSlots)
+            {
+                if (slot.carRenderer != null)
+                {
+                    slot.carRenderer.enabled = false;
+                }
+
+                if (slot.playerLabel != null)
+                {
+                    slot.playerLabel.text = string.Empty;
+                }
+
+                if (slot.pointsLabel != null)
+                {
+                    slot.pointsLabel.text = string.Empty;
+                }
+            }
+
+            List<(int playerID, int points)> ranking = BuildRanking();
+            StartCoroutine(RevealRoutine(ranking));
+        }
 
         private List<(int playerID, int points)> BuildRanking()
         {
@@ -107,16 +140,44 @@ private void Start()
 
                 ApplySlotData(slot, entry.playerID, entry.points);
                 yield return StartCoroutine(RiseRoutine(slot));
-                yield return new WaitForSeconds(delayBetweenSlots);
-            }
 
-            if (continueButtonRoot != null)
-            {
-                continueButtonRoot.SetActive(true);
+                RevealLabels(slot, entry.playerID, entry.points);
+
+                if (slot.carRenderer != null)
+                {
+                    slot.carRenderer.enabled = true;
+                }
+
+                if (enableCarIdleAnimation && slot.carRenderer != null && slot.bobCarWhileIdle)
+                {
+                    Coroutine idle = StartCoroutine(CarIdleRoutine(slot.carRenderer));
+                    idleRoutines.Add(idle);
+                }
+
+                yield return new WaitForSeconds(delayBetweenSlots);
             }
         }
 
         private void ApplySlotData(PodiumSlot slot, int playerID, int points)
+        {
+            if (slot.standTransform != null)
+            {
+                slot.standTransform.localPosition = slot.hiddenLocalPosition;
+            }
+
+            if (slot.carRenderer != null)
+            {
+                if (carSpriteByPlayerIndex != null
+                    && playerID - 1 >= 0
+                    && playerID - 1 < carSpriteByPlayerIndex.Length
+                    && carSpriteByPlayerIndex[playerID - 1] != null)
+                {
+                    slot.carRenderer.sprite = carSpriteByPlayerIndex[playerID - 1];
+                }
+            }
+        }
+
+        private void RevealLabels(PodiumSlot slot, int playerID, int points)
         {
             if (slot.playerLabel != null)
             {
@@ -125,16 +186,11 @@ private void Start()
 
             if (slot.pointsLabel != null)
             {
-                pointsLabel_SetText(slot.pointsLabel, points);
-            }
-
-            if (slot.standTransform != null)
-            {
-                slot.standTransform.localPosition = slot.hiddenLocalPosition;
+                PointsLabel_SetText(slot.pointsLabel, points);
             }
         }
 
-        private void pointsLabel_SetText(TMPro.TextMeshProUGUI label, int points)
+        private void PointsLabel_SetText(TMPro.TextMeshProUGUI label, int points)
         {
             label.text = points == 1 ? "1 pt" : $"{points} pts";
         }
@@ -161,6 +217,30 @@ private void Start()
             slot.standTransform.localPosition = end;
         }
 
+        private IEnumerator CarIdleRoutine(SpriteRenderer carRenderer)
+        {
+            if (carRenderer == null)
+            {
+                yield break;
+            }
+
+            Transform carTransform = carRenderer.transform;
+            Vector3 basePosition = carTransform.localPosition;
+            float timeOffset = Random.Range(0f, 10f); // biar tiap mobil tidak persis sinkron
+
+            while (true)
+            {
+                float t = (Time.time + timeOffset) * carBobSpeed;
+
+                float bobOffset = Mathf.Sin(t) * carBobAmplitude;
+                carTransform.localPosition = basePosition + new Vector3(0f, bobOffset, 0f);
+
+                carTransform.Rotate(0f, 0f, carSpinDegreesPerSecond * Time.deltaTime);
+
+                yield return null;
+            }
+        }
+
         public void ReturnToMenu()
         {
             if (TournamentManager.Instance != null)
@@ -168,7 +248,7 @@ private void Start()
                 TournamentManager.Instance.ResetTournamentPoints();
             }
 
-            SceneManager.LoadScene(menuSceneName);
+            SceneManager.LoadScene("Menu");
         }
     }
 }

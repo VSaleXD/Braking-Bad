@@ -3,17 +3,18 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    private string modeGameSceneName = "Gamemode";
-
     public void OnPlayPressed()
     {
-        SceneManager.LoadScene(modeGameSceneName);
+        SceneManager.LoadScene("Gamemode");
     }
     public void goToGarage()
     {
         SceneManager.LoadScene("Garage");
     }
-
+    public void returnToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
     public void ExitGame()
     {
         Debug.Log("Exiting game...");
