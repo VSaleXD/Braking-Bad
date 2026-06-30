@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.PoliceCarHazard
   manager: {fileID: 0}
-  moveSpeed: 10
+  moveSpeed: 16
   turnSpeed: 180
   lifetime: 14
   explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}

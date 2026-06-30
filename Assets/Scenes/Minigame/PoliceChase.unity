@@ -104858,7 +104858,9 @@ MonoBehaviour:
   - {fileID: 408380788}
   - {fileID: 896497383}
   - {fileID: 1069659402}
-  rightLaneSpawnPoints: []
+  rightLaneSpawnPoints:
+  - {fileID: 797982905}
+  - {fileID: 1950218802}
   survivalPointsPerTick: 5
   survivalTickInterval: 1
   collisionPenalty: 25
@@ -105143,7 +105145,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 480, y: 70}
+  m_Size: {x: 960, y: 70}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -105157,7 +105159,7 @@ Transform:
   m_GameObject: {fileID: 1874591556}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -70, y: 0.1, z: 0}
+  m_LocalPosition: {x: 279, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
