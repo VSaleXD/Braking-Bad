@@ -33,6 +33,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
+      propertyPath: maxSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: crashSound
       value: 
       objectReference: {fileID: 8300000, guid: cc41e4c922aad624892e4de62a2ceefa, type: 3}

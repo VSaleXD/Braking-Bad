@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ce63fa880ce6ca74ea89fdb5f202842f
+guid: 4dcfe99b722998948990da82ca469138
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2676159555221356526
-    second: ufo_0
+      213: -9162451087844404978
+    second: Police Chase BG 10x_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -48,11 +48,11 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 253, y: 0, z: 470, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ufo_0
+      name: Police Chase BG 10x_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 450
-        height: 450
+        width: 3200
+        height: 1800
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: eef7c33cfe0a32520800000000000000
-      internalID: 2676159555221356526
+      spriteID: e019425c74f68d080800000000000000
+      internalID: -9162451087844404978
       vertices: []
       indices: 
       edges: []
@@ -126,7 +126,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ufo_0: 2676159555221356526
+      Police Chase BG 10x_0: -9162451087844404978
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: maxSpeed
-      value: 100
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: crashSound
@@ -46,7 +46,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: ec5a2fbe7082f0648b60a621a2bdf8e8, type: 3}
     - target: {fileID: 5098990190778753012, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: thrustforce
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5857422427430893418, guid: 8e3a6db9fa0bc054998b206858ee1eea, type: 3}
       propertyPath: m_LocalPosition.x

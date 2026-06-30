@@ -31,10 +31,6 @@ public class playerController : MonoBehaviour
     [Tooltip("Kelipatan angularVelocity yang dipertahankan tepat saat collision (0 = langsung 0, 1 = tidak diredam)")]
     [SerializeField, Range(0f, 1f)] private float collisionSpinRetention = 0.2f;
 
-    [Header("Effects & Destructions")]
-    public GameObject explosionEffect;
-    [SerializeField] public bool isDestroyed = false;
-
     [Header("Crash Sound")]
     [SerializeField] private AudioClip crashSound;
     [Tooltip("Batas minimum impact speed agar suara crash berbunyi")]
@@ -303,14 +299,5 @@ public class playerController : MonoBehaviour
             lastCrashSoundTime = Time.time;
         }
         // ─────────────────────────────────────────────────────────────────
-
-        if (isDestroyed)
-        {
-            if (explosionEffect != null)
-            {
-                Instantiate(explosionEffect, transform.position, transform.rotation);
-            }
-            Destroy(gameObject);
-        }
     }
 }
