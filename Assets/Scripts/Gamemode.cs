@@ -24,7 +24,7 @@ namespace BrakingBad.Gameplay
             if (TournamentManager.Instance == null)
             {
                 Debug.LogError("ModeGameButtons: TournamentManager.Instance tidak ditemukan. " +
-                                "Pastikan scene awal (MenuBaru) sudah punya GameObject dengan TournamentManager.");
+                                "Pastikan scene Menu/Bootstrap sudah pernah dijalankan duluan.");
                 return;
             }
 

@@ -4,10 +4,22 @@ using UnityEngine;
 
 namespace BrakingBad.Gameplay
 {
-    /// Circle arena elimination mode. The first car out scores 0, the survivor gets the highest score.
+    /// <summary>
+    /// Circle arena elimination mode.
+    /// Scoring: pemain yang jatuh lebih awal dapat skor lebih rendah.
+    /// Match berakhir lebih awal kalau sudah hanya 1 pemain tersisa.
+    /// </summary>
     public sealed class Minigame_CarSumo : BaseMinigameManager
     {
         [SerializeField] private float survivorBonus = 3f;
+
+        private static readonly string[] eliminationMessages =
+        {
+            "OUT! 💥",
+            "OUT! 💥",
+            "OUT! 💥",
+            "WINNER! 🏆"
+        };
 
         private readonly HashSet<int> eliminatedPlayers = new HashSet<int>();
 
@@ -17,7 +29,7 @@ namespace BrakingBad.Gameplay
 
             foreach (TournamentPlayerAgent agent in GetRegisteredPlayers())
             {
-                agent.ResetForNewMatch();
+                agent.SetEliminated(false);
             }
         }
 
@@ -30,8 +42,34 @@ namespace BrakingBad.Gameplay
 
             int eliminationOrder = eliminatedPlayers.Count;
             eliminatedPlayers.Add(agent.PlayerID);
-            agent.EliminateWithSplash();
+            agent.SetEliminated(true);
+
+
             SetGameplayScore(agent.PlayerID, eliminationOrder);
+            ShowComboMessage($"P{agent.PlayerID} OUT!");
+
+            
+            CheckForEarlyEnd();
+        }
+
+        private void CheckForEarlyEnd()
+        {
+            List<TournamentPlayerAgent> allPlayers = GetRegisteredPlayers().ToList();
+            int activeCount = allPlayers.Count(a => !eliminatedPlayers.Contains(a.PlayerID));
+
+            if (activeCount <= 1)
+            {
+                foreach (TournamentPlayerAgent agent in allPlayers)
+                {
+                    if (!eliminatedPlayers.Contains(agent.PlayerID))
+                    {
+                        SetGameplayScore(agent.PlayerID, survivorBonus);
+                        ShowComboMessage($"P{agent.PlayerID} WINS!");
+                    }
+                }
+
+                CompleteMatch();
+            }
         }
 
         protected override List<PlayerMatchResult> CollectFinalScores()

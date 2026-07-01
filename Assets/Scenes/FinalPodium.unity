@@ -208,6 +208,7 @@ GameObject:
   m_Component:
   - component: {fileID: 74033683}
   - component: {fileID: 74033684}
+  - component: {fileID: 74033685}
   m_Layer: 0
   m_Name: PodiumController
   m_TagString: Untagged
@@ -301,6 +302,21 @@ MonoBehaviour:
   carBobSpeed: 2
   carSpinDegreesPerSecond: 40
   continueButtonRoot: {fileID: 1274435407}
+--- !u!114 &74033685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74033682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69be0a6139898b646972b9d6f3a17b78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.SceneMusicSetter
+  musicForThisScene: {fileID: 8300000, guid: ec454725d4df0b94bb7279c0a95cac27, type: 3}
+  fadeTransition: 1
+  loop: 0
 --- !u!1 &114359790
 GameObject:
   m_ObjectHideFlags: 0

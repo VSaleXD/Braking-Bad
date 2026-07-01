@@ -10,6 +10,7 @@ namespace BrakingBad.Gameplay
         [Header("Hazards")]
         [SerializeField] private GameObject policeCarPrefab;
         [SerializeField] private float spawnInterval = 2f;
+        [SerializeField] private float delay = 1f;
 
         [Header("Highway Lanes")]
         [Tooltip("Titik-titik di tepi KIRI jalan, satu per lane.")]
@@ -63,6 +64,19 @@ namespace BrakingBad.Gameplay
                 eliminatedPlayers.Add(agent.PlayerID);
                 agent.EliminateWithSplash();
             }
+        }
+        private void HandleHazardSpawnDelay(float delay)
+        {
+            if (hazardRoutine != null)
+            {
+                StopCoroutine(hazardRoutine);
+            }
+            hazardRoutine = StartCoroutine(DelayedHazardSpawn(delay));
+        }
+        private IEnumerator DelayedHazardSpawn(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            hazardRoutine = StartCoroutine(HazardSpawnRoutine());
         }
 
         private IEnumerator HazardSpawnRoutine()

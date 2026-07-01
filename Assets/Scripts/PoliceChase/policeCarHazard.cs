@@ -7,7 +7,7 @@ namespace BrakingBad.Gameplay
     {
         [SerializeField] private Minigame_PoliceChase manager;
         [SerializeField] private float moveSpeed = 8f;
-
+        
         [Header("Homing")]
         [Tooltip("Seberapa cepat mobil membelokkan arah menuju player terdekat. Semakin besar, semakin agresif ngejar.")]
         [SerializeField] private float turnSpeed = 180f;

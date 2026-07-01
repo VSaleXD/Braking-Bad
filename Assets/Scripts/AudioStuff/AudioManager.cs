@@ -96,6 +96,13 @@ namespace BrakingBad.Gameplay
                 audioSource.volume = Mathf.Clamp01(volume);
             }
         }
+        public void SetLoop(bool loop)
+        {
+            if (audioSource != null)
+            {
+                audioSource.loop = loop;
+            }
+        }
 
         private System.Collections.IEnumerator CrossfadeTo(AudioClip newClip)
         {
