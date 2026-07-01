@@ -153,35 +153,47 @@ namespace BrakingBad.Gameplay
                     break;
             }
         }
-
         private void CollapseTile()
+{
+    if (lavaFallSound != null && agentsOnTile.Count > 0)
+    {
+        audioSource.PlayOneShot(lavaFallSound, lavaFallVolume);
+    }
+
+    HashSet<TournamentPlayerAgent> toEliminate = new HashSet<TournamentPlayerAgent>(agentsOnTile);
+
+    if (tileCollider != null)
+    {
+        List<Collider2D> results = new List<Collider2D>();
+        tileCollider.Overlap(new ContactFilter2D().NoFilter(), results);
+
+        foreach (Collider2D col in results)
         {
-            // ── Sound Lava Fall ───────────────────────────────────────────
-            if (lavaFallSound != null && agentsOnTile.Count > 0)
+            TournamentPlayerAgent agent = col.GetComponentInParent<TournamentPlayerAgent>();
+            if (agent != null)
             {
-                audioSource.PlayOneShot(lavaFallSound, lavaFallVolume);
+                toEliminate.Add(agent);
             }
-            // ─────────────────────────────────────────────────────────────
-
-            if (manager != null)
-            {
-                foreach (TournamentPlayerAgent agent in agentsOnTile)
-                {
-                    if (agent != null)
-                    {
-                        manager.RegisterFallenPlayer(agent);
-                    }
-                }
-            }
-
-            agentsOnTile.Clear();
-
-            if (tileCollider != null)
-            {
-                tileCollider.enabled = false;
-            }
-
-            // if (spriteRenderer != null) spriteRenderer.enabled = false;
         }
+    }
+
+    if (manager != null)
+    {
+        foreach (TournamentPlayerAgent agent in toEliminate)
+        {
+            if (agent != null)
+            {
+                manager.RegisterFallenPlayer(agent);
+            }
+        }
+    }
+
+    agentsOnTile.Clear();
+
+    if (tileCollider != null)
+    {
+        tileCollider.enabled = false;
+    }
+}
     }
 }
