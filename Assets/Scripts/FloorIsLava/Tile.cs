@@ -165,7 +165,7 @@ namespace BrakingBad.Gameplay
     if (tileCollider != null)
     {
         List<Collider2D> results = new List<Collider2D>();
-        tileCollider.Overlap(new ContactFilter2D().NoFilter(), results);
+        tileCollider.Overlap(results);
 
         foreach (Collider2D col in results)
         {
