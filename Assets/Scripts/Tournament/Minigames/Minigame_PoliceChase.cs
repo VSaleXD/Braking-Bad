@@ -33,6 +33,7 @@ namespace BrakingBad.Gameplay
             eliminatedPlayers.Clear();
             hazardRoutine = StartCoroutine(HazardSpawnRoutine());
             survivalRoutine = StartCoroutine(SurvivalScoreRoutine());
+            HandleHazardSpawnDelay(delay);
         }
 
         protected override void OnMatchEnded()

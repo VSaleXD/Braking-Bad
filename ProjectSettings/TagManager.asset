@@ -7,6 +7,7 @@ TagManager:
   - UFO
   - Ball
   - Wall
+  - Lava
   layers:
   - Default
   - TransparentFX

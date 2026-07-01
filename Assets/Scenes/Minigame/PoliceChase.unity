@@ -104376,7 +104376,7 @@ MonoBehaviour:
   m_MinimumFOV: 3
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 10
-  m_MaximumOrthoSize: 40
+  m_MaximumOrthoSize: 34
 --- !u!114 &779880067
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -104879,7 +104879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69be0a6139898b646972b9d6f3a17b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.SceneMusicSetter
-  musicForThisScene: {fileID: 8300000, guid: d16c119c22c82484c878cd56622d25de, type: 3}
+  musicForThisScene: {fileID: 8300000, guid: 0d114a4452e2b96469d8f06f12e03998, type: 3}
   fadeTransition: 1
   loop: 1
 --- !u!1 &1482331863

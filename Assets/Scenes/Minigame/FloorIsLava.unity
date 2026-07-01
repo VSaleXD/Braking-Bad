@@ -39452,6 +39452,57 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1260221679953474825, guid: 02de7577117d1044199804bca7827f03, type: 3}
   m_PrefabInstance: {fileID: 185944344}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &186137095 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 504067178327716713, guid: 25b6b0be6c7b77b499ef03ef65b93968, type: 3}
+  m_PrefabInstance: {fileID: 5990766627092039564}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &186137098
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186137095}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.1, y: 6.7}
+    newSize: {x: 3.1, y: 6.7}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 3.1, y: 6.7}
+  m_EdgeRadius: 0
 --- !u!1001 &186619215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286933,6 +286984,7 @@ MonoBehaviour:
   comboTextName: ComboText
   survivalPointsPerSecond: 2
   tileTriggerBonus: 5
+  lavaTileTag: Lava
 --- !u!114 &1372346054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308382,7 +308434,7 @@ Transform:
   m_GameObject: {fileID: 1482331863}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.6185017, y: 6.2188296, z: -11}
+  m_LocalPosition: {x: 3.37225, y: 6.49086, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -391661,7 +391713,7 @@ GameObject:
   - component: {fileID: 1904397502}
   m_Layer: 0
   m_Name: LavaTileGrid
-  m_TagString: Untagged
+  m_TagString: Lava
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -448432,14 +448484,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2642166619255824216, guid: 25b6b0be6c7b77b499ef03ef65b93968, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6947096136899287517, guid: 25b6b0be6c7b77b499ef03ef65b93968, type: 3}
       propertyPath: m_Name
       value: Player 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2642166619255824216, guid: 25b6b0be6c7b77b499ef03ef65b93968, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 504067178327716713, guid: 25b6b0be6c7b77b499ef03ef65b93968, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 186137098}
   m_SourcePrefab: {fileID: 100100000, guid: 25b6b0be6c7b77b499ef03ef65b93968, type: 3}
 --- !u!1001 &6611764751229866383
 PrefabInstance:
