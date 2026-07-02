@@ -7030,7 +7030,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69be0a6139898b646972b9d6f3a17b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneMusicSetter
-  musicForThisScene: {fileID: 8300000, guid: d40eb8f791d647d44974e2cc85b1b644, type: 3}
+  musicForThisScene: {fileID: 8300000, guid: 4d7499e9145c3a4489a1479de7e6e11e, type: 3}
   fadeTransition: 1
   loop: 1
 --- !u!1 &1482331863
@@ -7121,7 +7121,7 @@ Transform:
   m_GameObject: {fileID: 1482331863}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -11}
+  m_LocalPosition: {x: -0.015400052, y: 0.59695, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

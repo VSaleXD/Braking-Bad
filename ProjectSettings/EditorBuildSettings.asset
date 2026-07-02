@@ -32,7 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Minigame/PoliceChase.unity
     guid: 844ad4049514c9245b441fc9c2a81a42
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/testing/Spotlight.unity
     guid: 1382b3f554881744b82612c09b6e158c
   - enabled: 1

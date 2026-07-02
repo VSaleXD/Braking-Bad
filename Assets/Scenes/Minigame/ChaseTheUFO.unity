@@ -669,7 +669,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69be0a6139898b646972b9d6f3a17b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.SceneMusicSetter
-  musicForThisScene: {fileID: 8300000, guid: f1b0bfff3b068fb4c9937e5999fff7e5, type: 3}
+  musicForThisScene: {fileID: 8300000, guid: bc9acf8fc46bd374ca6b409e96666840, type: 3}
   fadeTransition: 1
   loop: 1
 --- !u!1 &1482331863

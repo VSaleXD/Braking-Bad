@@ -479,7 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aba7e98ecf95414db6b5af27fae4a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.AudioManager
-  defaultMusic: {fileID: 8300000, guid: cae521f337bd5494785177fd4e42c190, type: 3}
+  defaultMusic: {fileID: 8300000, guid: 585c03682799ecb47b39f237cc618c45, type: 3}
   defaultVolume: 0.3
   loop: 1
   playOnAwake: 1
@@ -495,7 +495,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: cae521f337bd5494785177fd4e42c190, type: 3}
+  m_Resource: {fileID: 8300000, guid: 585c03682799ecb47b39f237cc618c45, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -608,8 +608,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69be0a6139898b646972b9d6f3a17b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.SceneMusicSetter
-  musicForThisScene: {fileID: 8300000, guid: cae521f337bd5494785177fd4e42c190, type: 3}
+  musicForThisScene: {fileID: 8300000, guid: 585c03682799ecb47b39f237cc618c45, type: 3}
   fadeTransition: 1
+  loop: 1
 --- !u!1 &1079200308
 GameObject:
   m_ObjectHideFlags: 0
