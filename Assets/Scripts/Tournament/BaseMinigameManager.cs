@@ -16,7 +16,9 @@ namespace BrakingBad.Gameplay
         [SerializeField] protected UIDocument uiDocument;
         [SerializeField] protected string scoreTextName = "ScoreText";
         [SerializeField] protected string timerTextName = "TimerText";
+        [SerializeField] protected string comboContainerName = "ComboContainer";
         [SerializeField] protected string comboTextName = "ComboText";
+        [SerializeField] protected string pickupTextName = "PickupText";
 
         protected float matchTimer = 90f;
         protected bool isMatchStarted = false;
@@ -32,14 +34,27 @@ namespace BrakingBad.Gameplay
 
         private Label scoreLabel;
         private Label timerLabel;
+        private VisualElement comboContainer;
         private Label comboLabel;
+        private Label pickupLabel;
         private Coroutine comboRoutine;
+        private Coroutine pickupRoutine;
         private bool matchComplete;
 
         protected virtual void Awake()
         {
             CachePlayerAgents();
             ResetScoreState();
+        }
+
+        protected virtual void OnEnable()
+        {
+            PowerUpItem.PowerUpPickedUp += HandlePowerUpPickedUp;
+        }
+
+        protected virtual void OnDisable()
+        {
+            PowerUpItem.PowerUpPickedUp -= HandlePowerUpPickedUp;
         }
 
         protected virtual void Start()
@@ -214,6 +229,11 @@ namespace BrakingBad.Gameplay
 
         protected void ShowComboMessage(string message, float duration = 1.5f)
         {
+            ShowComboMessage(message, Color.white, duration);
+        }
+
+        protected void ShowComboMessage(string message, Color accentColor, float duration = 1.5f)
+        {
             if (comboLabel == null)
             {
                 return;
@@ -224,19 +244,169 @@ namespace BrakingBad.Gameplay
                 StopCoroutine(comboRoutine);
             }
 
-            comboRoutine = StartCoroutine(ComboMessageRoutine(message, duration));
+            comboRoutine = StartCoroutine(ComboMessageRoutine(message, accentColor, duration));
         }
 
-        private System.Collections.IEnumerator ComboMessageRoutine(string message, float duration)
+        protected void ShowPickupMessage(PowerUpType type, float duration = 1.5f)
         {
+            if (pickupLabel == null)
+            {
+                return;
+            }
+
+            if (pickupRoutine != null)
+            {
+                StopCoroutine(pickupRoutine);
+            }
+
+            string message = GetPickupMessage(type);
+            Color color = PowerUpItem.GetPowerUpColor(type);
+            pickupRoutine = StartCoroutine(PickupMessageRoutine(message, color, duration));
+        }
+
+        private System.Collections.IEnumerator ComboMessageRoutine(string message, Color accentColor, float duration)
+        {
+            float baseFontSize = comboLabel.resolvedStyle.fontSize;
+            float popFontSize = baseFontSize * 1.12f;
+
             comboLabel.text = message;
+            comboLabel.style.color = accentColor;
             comboLabel.style.display = DisplayStyle.Flex;
 
-            yield return new WaitForSeconds(duration);
+            if (comboContainer != null)
+            {
+                comboContainer.style.display = DisplayStyle.Flex;
+                comboContainer.style.opacity = 0f;
+            }
+
+            comboLabel.style.opacity = 0f;
+            comboLabel.style.fontSize = baseFontSize * 0.85f;
+            comboLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+            comboLabel.style.display = DisplayStyle.Flex;
+
+            const float fadeInDuration = 0.14f;
+            const float fadeOutDuration = 0.18f;
+            float holdDuration = Mathf.Max(0f, duration - fadeInDuration - fadeOutDuration);
+
+            for (float elapsed = 0f; elapsed < fadeInDuration; elapsed += Time.deltaTime)
+            {
+                float t = elapsed / fadeInDuration;
+                float eased = Mathf.SmoothStep(0f, 1f, t);
+
+                if (comboContainer != null)
+                {
+                    comboContainer.style.opacity = eased;
+                }
+
+                comboLabel.style.opacity = eased;
+                comboLabel.style.fontSize = Mathf.Lerp(baseFontSize * 0.85f, popFontSize, eased);
+                yield return null;
+            }
+
+            if (comboContainer != null)
+            {
+                comboContainer.style.opacity = 1f;
+            }
+
+            comboLabel.style.opacity = 1f;
+            comboLabel.style.fontSize = popFontSize;
+
+            if (holdDuration > 0f)
+            {
+                yield return new WaitForSeconds(holdDuration);
+            }
+
+            for (float elapsed = 0f; elapsed < fadeOutDuration; elapsed += Time.deltaTime)
+            {
+                float t = elapsed / fadeOutDuration;
+                float eased = 1f - Mathf.SmoothStep(0f, 1f, t);
+
+                if (comboContainer != null)
+                {
+                    comboContainer.style.opacity = eased;
+                }
+
+                comboLabel.style.opacity = eased;
+                comboLabel.style.fontSize = Mathf.Lerp(popFontSize, baseFontSize, t);
+                yield return null;
+            }
 
             comboLabel.text = string.Empty;
             comboLabel.style.display = DisplayStyle.None;
+            comboLabel.style.opacity = 1f;
+            comboLabel.style.fontSize = baseFontSize;
+            if (comboContainer != null)
+            {
+                comboContainer.style.display = DisplayStyle.None;
+                comboContainer.style.opacity = 1f;
+            }
             comboRoutine = null;
+        }
+
+        private System.Collections.IEnumerator PickupMessageRoutine(string message, Color color, float duration)
+        {
+            float baseFontSize = pickupLabel.resolvedStyle.fontSize;
+            float popFontSize = baseFontSize * 1.15f;
+
+            pickupLabel.text = message;
+            pickupLabel.style.color = color;
+            pickupLabel.style.display = DisplayStyle.Flex;
+            pickupLabel.style.opacity = 0f;
+            pickupLabel.style.fontSize = baseFontSize * 0.85f;
+
+            const float fadeInDuration = 0.15f;
+            const float fadeOutDuration = 0.2f;
+            float holdDuration = Mathf.Max(0f, duration - fadeInDuration - fadeOutDuration);
+
+            for (float elapsed = 0f; elapsed < fadeInDuration; elapsed += Time.deltaTime)
+            {
+                float t = elapsed / fadeInDuration;
+                pickupLabel.style.opacity = Mathf.Lerp(0f, 1f, t);
+                pickupLabel.style.fontSize = Mathf.Lerp(baseFontSize * 0.85f, popFontSize, t);
+                yield return null;
+            }
+
+            pickupLabel.style.opacity = 1f;
+            pickupLabel.style.fontSize = popFontSize;
+
+            if (holdDuration > 0f)
+            {
+                yield return new WaitForSeconds(holdDuration);
+            }
+
+            for (float elapsed = 0f; elapsed < fadeOutDuration; elapsed += Time.deltaTime)
+            {
+                float t = elapsed / fadeOutDuration;
+                pickupLabel.style.opacity = Mathf.Lerp(1f, 0f, t);
+                pickupLabel.style.fontSize = Mathf.Lerp(popFontSize, baseFontSize, t);
+                yield return null;
+            }
+
+            pickupLabel.text = string.Empty;
+            pickupLabel.style.display = DisplayStyle.None;
+            pickupLabel.style.opacity = 1f;
+            pickupLabel.style.fontSize = baseFontSize;
+            pickupRoutine = null;
+        }
+
+        private void HandlePowerUpPickedUp(PowerUpType type, Vector3 position)
+        {
+            ShowPickupMessage(type);
+        }
+
+        private string GetPickupMessage(PowerUpType type)
+        {
+            switch (type)
+            {
+                case PowerUpType.SpeedSurge:
+                    return "SPEED SURGE!";
+                case PowerUpType.Freeze:
+                    return "FREEZE!";
+                case PowerUpType.Shield:
+                    return "SHIELD!";
+                default:
+                    return "POWER UP!";
+            }
         }
 
         private void CacheUI()
@@ -254,11 +424,23 @@ namespace BrakingBad.Gameplay
             VisualElement root = uiDocument.rootVisualElement;
             scoreLabel = root.Q<Label>(scoreTextName);
             timerLabel = root.Q<Label>(timerTextName);
+            comboContainer = root.Q<VisualElement>(comboContainerName);
             comboLabel = root.Q<Label>(comboTextName);
+            pickupLabel = root.Q<Label>(pickupTextName);
+
+            if (comboContainer != null)
+            {
+                comboContainer.style.display = DisplayStyle.None;
+            }
 
             if (comboLabel != null)
             {
                 comboLabel.style.display = DisplayStyle.None;
+            }
+
+            if (pickupLabel != null)
+            {
+                pickupLabel.style.display = DisplayStyle.None;
             }
 
             RefreshScoreboardUI();

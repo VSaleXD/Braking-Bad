@@ -24,6 +24,7 @@ namespace BrakingBad.Gameplay
                 isItMap[p.PlayerID] = (p.PlayerID == currentItPlayerID);
 
             UpdateItVisuals();
+            ShowComboMessage($"P{currentItPlayerID} is IT!");
         }
 
         protected override void Update()
@@ -42,17 +43,18 @@ namespace BrakingBad.Gameplay
 
         public void TryTag(int taggerID, int taggedID)
         {
-            if (taggerID != currentItPlayerID) return; // hanya IT yang bisa nge-tag
+            if (taggerID != currentItPlayerID) return; 
             if (Time.time - lastTagTime < tagCooldown) return;
             if (taggedID == currentItPlayerID) return;
 
             lastTagTime = Time.time;
+            int previousItPlayerID = currentItPlayerID;
             currentItPlayerID = taggedID;
 
             foreach (var id in isItMap.Keys.ToList())
                 isItMap[id] = (id == currentItPlayerID);
 
-            ShowComboMessage($"P{taggedID} is IT!");
+            ShowComboMessage($"P{taggerID} tagged P{taggedID}!");
             UpdateItVisuals();
         }
 

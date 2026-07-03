@@ -11,8 +11,22 @@ namespace BrakingBad.Gameplay
 
         private void Awake()
         {
-            agent = GetComponent<TournamentPlayerAgent>();
+            agent = GetComponentInParent<TournamentPlayerAgent>();
             manager = FindFirstObjectByType<Minigame_CarTag>();
+
+            if (itIndicatorVFX == null)
+            {
+                Transform indicatorTransform = transform.Find("ItIndicator");
+                if (indicatorTransform != null)
+                {
+                    itIndicatorVFX = indicatorTransform.gameObject;
+                }
+            }
+
+            if (itIndicatorVFX != null)
+            {
+                itIndicatorVFX.SetActive(false);
+            }
         }
 
         public void SetItVisual(bool isIt)

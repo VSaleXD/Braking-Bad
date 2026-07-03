@@ -42,7 +42,7 @@ namespace BrakingBad.Gameplay
 
             int eliminationOrder = eliminatedPlayers.Count;
             eliminatedPlayers.Add(agent.PlayerID);
-            agent.SetEliminated(true);
+            agent.EliminateWithSplash();
 
             SetGameplayScore(agent.PlayerID, eliminationOrder);
             ShowComboMessage($"P{agent.PlayerID} OUT!");

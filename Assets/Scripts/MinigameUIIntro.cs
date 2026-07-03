@@ -23,7 +23,9 @@ namespace BrakingBad.Gameplay
             { "ChaseTheUFO", ("CHASE THE UFO", "Kejar UFO yang terbang bebas dan tabrak dia untuk mencuri poin!") },
             { "FloorIsLava", ("FLOOR IS LAVA", "Lantai akan retak dan hancur! Teruslah bergerak dan jadilah yang terakhir selamat.") },
             { "Spotlight", ("SPOTLIGHT", "REBUT LAMPU SOROT! Tabrak pemegang spotlight untuk mencuri poin per detik!") },
-            { "CaptureTheFlag", ("CAPTURE THE FLAG", "Ambil bendera dan bawa pulang ke tengah arena.") }
+            { "CaptureTheFlag", ("CAPTURE THE FLAG", "Ambil bendera dan bawa pulang ke tengah arena.") },
+            { "CarMaze" , ("CAR MAZE", "Temukan jalan keluar dari labirin secepat mungkin!") },
+            { "CarTag" , ("CAR TAG", "Jangan sampai ditandai! Tabrak pemain lain untuk mencuri poin!") }
         };
 
         private void Start()

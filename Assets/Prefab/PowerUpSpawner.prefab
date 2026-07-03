@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6015972287664229730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8870209078285238612}
+  - component: {fileID: 3553925827085969120}
+  m_Layer: 0
+  m_Name: PowerUpSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8870209078285238612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6015972287664229730}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.78269, y: -10.91847, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3553925827085969120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6015972287664229730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 807c6007c8477b941af40ebb7fb48987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.PowerUpSpawner
+  powerUpPrefabs:
+  - prefab: {fileID: 8879934492072990659, guid: ad1389172b434d642b124a0ee81bc1d9, type: 3}
+    weight: 1
+  - prefab: {fileID: 5300002644672811860, guid: d6665d35f09019046a4d0981136666e7, type: 3}
+    weight: 1
+  - prefab: {fileID: 4936251901422414564, guid: dca07fd5e770a9e4dafc5bd3380fc09b, type: 3}
+    weight: 1
+  spawnArea: {fileID: 0}
+  spawnPoints: []
+  spawnInterval: 8
+  maxActivePowerUps: 2
+  spawnAttempts: 30
+  autoStart: 1
