@@ -180,7 +180,7 @@ public class playerController : MonoBehaviour
                 isShielded = false;
             }
         }
-        
+
         if (movementEnabled)
         {
             movePlayer();
@@ -277,11 +277,12 @@ public class playerController : MonoBehaviour
             transform.Rotate(0f, 0f, -rotationDelta);
         }
 
-        rb.AddForce(transform.up * (thrustforce * throttleMultiplier));
+        rb.AddForce(transform.up * (thrustforce * throttleMultiplier * speedSurgeMultiplier), ForceMode2D.Force);
 
-        if (rb.linearVelocity.magnitude > maxSpeed)
+        float efectiveMaxSpeed = maxSpeed * speedSurgeMultiplier;
+        if (rb.linearVelocity.magnitude > efectiveMaxSpeed)
         {
-            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+            rb.linearVelocity = rb.linearVelocity.normalized * efectiveMaxSpeed;
         }
     }
 
