@@ -17,6 +17,7 @@ namespace BrakingBad.Gameplay
         [SerializeField] private Minigame_FloorIsLava manager;
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private Collider2D tileCollider;
+        [SerializeField] private lava lavaTrigger;
 
         [Header("State Sprites")]
         [SerializeField] private Sprite safeSprite;
@@ -31,14 +32,6 @@ namespace BrakingBad.Gameplay
         [SerializeField] private float timeToReachCrack2 = 0.4f;
         [Tooltip("Durasi dari Crack2 ke Lava (collapse)")]
         [SerializeField] private float timeToReachLava = 0.35f;
-
-        [Header("Sounds")]
-        [Tooltip("Sound saat tile mulai retak (Crack1)")]
-        [SerializeField] private AudioClip crackSound;
-        [Tooltip("Sound saat tile collapse dan mobil jatuh ke lava")]
-        [SerializeField] private AudioClip lavaFallSound;
-        [SerializeField, Range(0f, 1f)] private float crackVolume = 1f;
-        [SerializeField, Range(0f, 1f)] private float lavaFallVolume = 1f;
 
         private AudioSource audioSource;
         private TileState currentState = TileState.Safe;
@@ -57,16 +50,6 @@ namespace BrakingBad.Gameplay
             {
                 tileCollider = GetComponent<Collider2D>();
             }
-
-            // ── Audio Source ──────────────────────────────────────────────
-            audioSource = GetComponent<AudioSource>();
-            if (audioSource == null)
-            {
-                audioSource = gameObject.AddComponent<AudioSource>();
-                audioSource.playOnAwake = false;
-                audioSource.spatialBlend = 0f; // 2D sound
-            }
-            // ─────────────────────────────────────────────────────────────
 
             ApplyStateVisual(TileState.Safe);
         }
@@ -108,13 +91,6 @@ namespace BrakingBad.Gameplay
             yield return new WaitForSeconds(timeToReachCrack1);
             SetState(TileState.Crack1);
 
-            // ── Sound Crack ───────────────────────────────────────────────
-            if (crackSound != null)
-            {
-                audioSource.PlayOneShot(crackSound, crackVolume);
-            }
-            // ─────────────────────────────────────────────────────────────
-
             yield return new WaitForSeconds(timeToReachCrack2);
             SetState(TileState.Crack2);
 
@@ -149,51 +125,22 @@ namespace BrakingBad.Gameplay
                     if (crack2Sprite != null) spriteRenderer.sprite = crack2Sprite;
                     break;
                 case TileState.Lava:
-                    if (lavaSprite != null) spriteRenderer.sprite = lavaSprite;
+                    if (lavaSprite != null) spriteRenderer.enabled = false;
                     break;
             }
         }
         private void CollapseTile()
-{
-    if (lavaFallSound != null && agentsOnTile.Count > 0)
-    {
-        audioSource.PlayOneShot(lavaFallSound, lavaFallVolume);
-    }
-
-    HashSet<TournamentPlayerAgent> toEliminate = new HashSet<TournamentPlayerAgent>(agentsOnTile);
-
-    if (tileCollider != null)
-    {
-        List<Collider2D> results = new List<Collider2D>();
-        tileCollider.Overlap(results);
-
-        foreach (Collider2D col in results)
         {
-            TournamentPlayerAgent agent = col.GetComponentInParent<TournamentPlayerAgent>();
-            if (agent != null)
+            if (tileCollider != null)
             {
-                toEliminate.Add(agent);
+                tileCollider.enabled = false;
             }
-        }
-    }
 
-    if (manager != null)
-    {
-        foreach (TournamentPlayerAgent agent in toEliminate)
-        {
-            if (agent != null)
+            if (lavaTrigger != null)
             {
-                manager.RegisterFallenPlayer(agent);
+                lavaTrigger.Activate();
             }
+            agentsOnTile.Clear();
         }
-    }
-
-    agentsOnTile.Clear();
-
-    if (tileCollider != null)
-    {
-        tileCollider.enabled = false;
-    }
-}
     }
 }
