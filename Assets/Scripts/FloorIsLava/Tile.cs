@@ -10,28 +10,23 @@ namespace BrakingBad.Gameplay
         {
             Safe,
             Crack1,
-            Crack2,
-            Lava
+            Crack2
         }
 
         [SerializeField] private Minigame_FloorIsLava manager;
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private Collider2D tileCollider;
-        [SerializeField] private lava lavaTrigger;
 
         [Header("State Sprites")]
         [SerializeField] private Sprite safeSprite;
         [SerializeField] private Sprite crack1Sprite;
         [SerializeField] private Sprite crack2Sprite;
-        [SerializeField] private Sprite lavaSprite;
 
         [Header("Timing")]
         [Tooltip("Durasi dari Safe ke Crack1, sejak pertama diinjak")]
         [SerializeField] private float timeToReachCrack1 = 0.5f;
         [Tooltip("Durasi dari Crack1 ke Crack2")]
         [SerializeField] private float timeToReachCrack2 = 0.4f;
-        [Tooltip("Durasi dari Crack2 ke Lava (collapse)")]
-        [SerializeField] private float timeToReachLava = 0.35f;
 
         private AudioSource audioSource;
         private TileState currentState = TileState.Safe;
@@ -94,9 +89,6 @@ namespace BrakingBad.Gameplay
             yield return new WaitForSeconds(timeToReachCrack2);
             SetState(TileState.Crack2);
 
-            yield return new WaitForSeconds(timeToReachLava);
-            SetState(TileState.Lava);
-
             CollapseTile();
         }
 
@@ -124,23 +116,34 @@ namespace BrakingBad.Gameplay
                 case TileState.Crack2:
                     if (crack2Sprite != null) spriteRenderer.sprite = crack2Sprite;
                     break;
-                case TileState.Lava:
-                    if (lavaSprite != null) spriteRenderer.enabled = false;
-                    break;
             }
         }
         private void CollapseTile()
         {
+            if (manager != null)
+            {
+                foreach (TournamentPlayerAgent agent in agentsOnTile)
+                {
+                    if (agent != null)
+                    {
+                        manager.RegisterFallenPlayer(agent);
+                    }
+                }
+            }
+
             if (tileCollider != null)
             {
                 tileCollider.enabled = false;
             }
 
-            if (lavaTrigger != null)
+            if (spriteRenderer != null)
             {
-                lavaTrigger.Activate();
+                spriteRenderer.enabled = false;
             }
+
             agentsOnTile.Clear();
+
+            gameObject.SetActive(false);
         }
     }
 }

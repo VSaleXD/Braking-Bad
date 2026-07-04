@@ -157,11 +157,5 @@ MonoBehaviour:
   safeSprite: {fileID: -1572391234087474867, guid: baf228a5631b8f34d83645e355d3b26a, type: 3}
   crack1Sprite: {fileID: 5352722585669383705, guid: c3a0a83bbb18ee24ca42f0491c00fb07, type: 3}
   crack2Sprite: {fileID: -1751847731861972590, guid: 191de185c34da0048915dbc670b2a2b6, type: 3}
-  lavaSprite: {fileID: 21300000, guid: cf34c87b271ffb8479af96fda07278a3, type: 3}
-  timeToReachCrack1: 1
-  timeToReachCrack2: 1
-  timeToReachLava: 2
-  crackSound: {fileID: 0}
-  lavaFallSound: {fileID: 8300000, guid: fc77bb282ec403440a89cd4decc4a4cd, type: 3}
-  crackVolume: 0.025
-  lavaFallVolume: 0.2
+  timeToReachCrack1: 1.5
+  timeToReachCrack2: 1.5

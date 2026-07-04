@@ -3064,6 +3064,7 @@ MonoBehaviour:
   uiDocument: {fileID: 2132111265}
   scoreTextName: ScoreText
   timerTextName: TimerText
+  comboContainerName: ComboContainer
   comboTextName: ComboText
   pickupTextName: PickupText
   goalReward: 100
@@ -3079,7 +3080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69be0a6139898b646972b9d6f3a17b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Gameplay.SceneMusicSetter
-  musicForThisScene: {fileID: 8300000, guid: d40eb8f791d647d44974e2cc85b1b644, type: 3}
+  musicForThisScene: {fileID: 8300000, guid: fa8893069a1a2c949bb2f8c1fe8ec4f5, type: 3}
   fadeTransition: 1
   loop: 1
 --- !u!1 &1396690044

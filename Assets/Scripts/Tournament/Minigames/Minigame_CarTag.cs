@@ -64,7 +64,7 @@ namespace BrakingBad.Gameplay
         {
             foreach (var player in GetRegisteredPlayers())
             {
-                var state = player.GetComponent<carState>();
+                var state = player.GetComponentInChildren<carState>(true);
                 if (state != null) state.SetItVisual(player.PlayerID == currentItPlayerID);
             }
         }
