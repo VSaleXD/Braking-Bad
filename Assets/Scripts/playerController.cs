@@ -52,7 +52,6 @@ public class playerController : MonoBehaviour
     [SerializeField, Range(0.5f, 2f)] private float enginePitchMax = 1.4f;
     [Tooltip("Seberapa cepat volume & pitch engine menyesuaikan kecepatan")]
     [SerializeField] private float engineSmoothSpeed = 5f;
-
     private AudioSource engineAudioSource;
     private float lastCrashSoundTime = -999f;
 
@@ -66,6 +65,43 @@ public class playerController : MonoBehaviour
     private float steerHeldTime = 0f;
     private float currentOversteerMultiplier = 1f;
     private float unwantedSpinTimer = 0f;
+    [Header("Power-Up State")]
+    private float speedSurgeMultiplier = 1f;
+    private float speedSurgeTimer = 0f;
+    private bool isFrozen = false;
+    private float freezeTimer = 0f;
+    private bool isShielded = false;
+    private float shieldTimer = 0f;
+
+    public bool IsShielded => isShielded;
+    public bool IsFrozen => isFrozen;
+
+    public void ApplySpeedSurge(float multiplier, float duration)
+    {
+    speedSurgeMultiplier = multiplier;
+    speedSurgeTimer = duration;
+    }
+
+    public void ApplyFreeze(float duration)
+    {
+    isFrozen = true;
+    freezeTimer = Mathf.Max(freezeTimer, duration);
+    rb.linearVelocity = Vector2.zero;
+    }
+
+    public void ApplyShield(float duration)
+    {
+    isShielded = true;
+    shieldTimer = duration;
+    }
+
+    public bool TryConsumeShield()
+    {
+    if (!isShielded) return false;
+    isShielded = false;
+    shieldTimer = 0f;
+    return true;
+    }
 
     void Awake()
     {
@@ -120,6 +156,31 @@ public class playerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(speedSurgeTimer > 0f)
+        {
+            speedSurgeTimer -= Time.fixedDeltaTime;
+            if (speedSurgeTimer <= 0f)
+            {
+                speedSurgeMultiplier = 1f;
+            }
+        }
+        if(freezeTimer > 0f)
+        {
+            freezeTimer -= Time.fixedDeltaTime;
+            if (freezeTimer <= 0f)
+            {
+                isFrozen = false;
+            }
+        }
+        if(shieldTimer > 0f)
+        {
+            shieldTimer -= Time.fixedDeltaTime;
+            if (shieldTimer <= 0f)
+            {
+                isShielded = false;
+            }
+        }
+
         if (movementEnabled)
         {
             movePlayer();
@@ -216,11 +277,12 @@ public class playerController : MonoBehaviour
             transform.Rotate(0f, 0f, -rotationDelta);
         }
 
-        rb.AddForce(transform.up * (thrustforce * throttleMultiplier));
+        rb.AddForce(transform.up * (thrustforce * throttleMultiplier * speedSurgeMultiplier), ForceMode2D.Force);
 
-        if (rb.linearVelocity.magnitude > maxSpeed)
+        float efectiveMaxSpeed = maxSpeed * speedSurgeMultiplier;
+        if (rb.linearVelocity.magnitude > efectiveMaxSpeed)
         {
-            rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+            rb.linearVelocity = rb.linearVelocity.normalized * efectiveMaxSpeed;
         }
     }
 

@@ -10,8 +10,7 @@ namespace BrakingBad.Gameplay
         {
             Safe,
             Crack1,
-            Crack2,
-            Lava
+            Crack2
         }
 
         [SerializeField] private Minigame_FloorIsLava manager;
@@ -22,23 +21,12 @@ namespace BrakingBad.Gameplay
         [SerializeField] private Sprite safeSprite;
         [SerializeField] private Sprite crack1Sprite;
         [SerializeField] private Sprite crack2Sprite;
-        [SerializeField] private Sprite lavaSprite;
 
         [Header("Timing")]
         [Tooltip("Durasi dari Safe ke Crack1, sejak pertama diinjak")]
         [SerializeField] private float timeToReachCrack1 = 0.5f;
         [Tooltip("Durasi dari Crack1 ke Crack2")]
         [SerializeField] private float timeToReachCrack2 = 0.4f;
-        [Tooltip("Durasi dari Crack2 ke Lava (collapse)")]
-        [SerializeField] private float timeToReachLava = 0.35f;
-
-        [Header("Sounds")]
-        [Tooltip("Sound saat tile mulai retak (Crack1)")]
-        [SerializeField] private AudioClip crackSound;
-        [Tooltip("Sound saat tile collapse dan mobil jatuh ke lava")]
-        [SerializeField] private AudioClip lavaFallSound;
-        [SerializeField, Range(0f, 1f)] private float crackVolume = 1f;
-        [SerializeField, Range(0f, 1f)] private float lavaFallVolume = 1f;
 
         private AudioSource audioSource;
         private TileState currentState = TileState.Safe;
@@ -57,16 +45,6 @@ namespace BrakingBad.Gameplay
             {
                 tileCollider = GetComponent<Collider2D>();
             }
-
-            // ── Audio Source ──────────────────────────────────────────────
-            audioSource = GetComponent<AudioSource>();
-            if (audioSource == null)
-            {
-                audioSource = gameObject.AddComponent<AudioSource>();
-                audioSource.playOnAwake = false;
-                audioSource.spatialBlend = 0f; // 2D sound
-            }
-            // ─────────────────────────────────────────────────────────────
 
             ApplyStateVisual(TileState.Safe);
         }
@@ -108,18 +86,8 @@ namespace BrakingBad.Gameplay
             yield return new WaitForSeconds(timeToReachCrack1);
             SetState(TileState.Crack1);
 
-            // ── Sound Crack ───────────────────────────────────────────────
-            if (crackSound != null)
-            {
-                audioSource.PlayOneShot(crackSound, crackVolume);
-            }
-            // ─────────────────────────────────────────────────────────────
-
             yield return new WaitForSeconds(timeToReachCrack2);
             SetState(TileState.Crack2);
-
-            yield return new WaitForSeconds(timeToReachLava);
-            SetState(TileState.Lava);
 
             CollapseTile();
         }
@@ -148,52 +116,34 @@ namespace BrakingBad.Gameplay
                 case TileState.Crack2:
                     if (crack2Sprite != null) spriteRenderer.sprite = crack2Sprite;
                     break;
-                case TileState.Lava:
-                    if (lavaSprite != null) spriteRenderer.sprite = lavaSprite;
-                    break;
             }
         }
         private void CollapseTile()
-{
-    if (lavaFallSound != null && agentsOnTile.Count > 0)
-    {
-        audioSource.PlayOneShot(lavaFallSound, lavaFallVolume);
-    }
-
-    HashSet<TournamentPlayerAgent> toEliminate = new HashSet<TournamentPlayerAgent>(agentsOnTile);
-
-    if (tileCollider != null)
-    {
-        List<Collider2D> results = new List<Collider2D>();
-        tileCollider.Overlap(results);
-
-        foreach (Collider2D col in results)
         {
-            TournamentPlayerAgent agent = col.GetComponentInParent<TournamentPlayerAgent>();
-            if (agent != null)
+            if (manager != null)
             {
-                toEliminate.Add(agent);
+                foreach (TournamentPlayerAgent agent in agentsOnTile)
+                {
+                    if (agent != null)
+                    {
+                        manager.RegisterFallenPlayer(agent);
+                    }
+                }
             }
-        }
-    }
 
-    if (manager != null)
-    {
-        foreach (TournamentPlayerAgent agent in toEliminate)
-        {
-            if (agent != null)
+            if (tileCollider != null)
             {
-                manager.RegisterFallenPlayer(agent);
+                tileCollider.enabled = false;
             }
+
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.enabled = false;
+            }
+
+            agentsOnTile.Clear();
+
+            gameObject.SetActive(false);
         }
-    }
-
-    agentsOnTile.Clear();
-
-    if (tileCollider != null)
-    {
-        tileCollider.enabled = false;
-    }
-}
     }
 }

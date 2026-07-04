@@ -118,6 +118,7 @@ namespace BrakingBad.Gameplay
         {
             activePlayerCount = Mathf.Clamp(playerCount, 2, 4);
             ResetTournamentPoints();
+            ShuffleAndSelectMinigames();
             BeginTournament();
         }
 

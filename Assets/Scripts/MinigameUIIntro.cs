@@ -25,6 +25,8 @@ namespace BrakingBad.Gameplay
             { "Spotlight", ("SPOTLIGHT", "REBUT LAMPU SOROT! Tabrak pemegang spotlight untuk mencuri poin per detik!") },
             { "CaptureTheFlag", ("CAPTURE THE FLAG", "Ambil bendera dan bawa pulang ke tengah arena.") },
             { "MazeEscape", ("MAZE ESCAPE", "Jadilah yang pertama menemukan jalan keluar dari labirin!") }
+            { "CarMaze" , ("CAR MAZE", "Temukan jalan keluar dari labirin secepat mungkin!") },
+            { "CarTag" , ("CAR TAG", "Jangan sampai ditandai! Tabrak pemain lain untuk mencuri poin!") }
         };
 
         private void Start()

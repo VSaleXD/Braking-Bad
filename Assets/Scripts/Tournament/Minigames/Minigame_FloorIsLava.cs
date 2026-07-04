@@ -9,9 +9,6 @@ namespace BrakingBad.Gameplay
         [SerializeField] private float survivalPointsPerSecond = 2f;
         [SerializeField] private float tileTriggerBonus = 5f;
 
-
-        [SerializeField] private string lavaTileTag = "Lava";
-
         private readonly HashSet<int> fallenPlayers = new HashSet<int>();
         private bool matchEnded = false;
         private Coroutine survivalRoutine;
@@ -52,27 +49,6 @@ namespace BrakingBad.Gameplay
             agent.EliminateWithSplash();
 
             CheckSurvivorCount();
-        }
-
-        private void CheckLavaPositionFallback()
-        {
-            if (matchEnded) return;
-
-            foreach (TournamentPlayerAgent agent in GetRegisteredPlayers())
-            {
-                if (fallenPlayers.Contains(agent.PlayerID)) continue;
-
-            
-                Collider2D hit = Physics2D.OverlapPoint(
-                    agent.transform.position,
-                    LayerMask.GetMask("Lava")
-                );
-
-                if (hit != null && hit.CompareTag(lavaTileTag))
-                {
-                    RegisterFallenPlayer(agent);
-                }
-            }
         }
 
         private void CheckSurvivorCount()
@@ -118,8 +94,6 @@ namespace BrakingBad.Gameplay
                         AddGameplayScore(agent.PlayerID, survivalPointsPerSecond);
                     }
                 }
-
-                CheckLavaPositionFallback();
             }
         }
     }

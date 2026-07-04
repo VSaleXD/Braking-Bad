@@ -42,35 +42,37 @@ namespace BrakingBad.Gameplay
 
             int eliminationOrder = eliminatedPlayers.Count;
             eliminatedPlayers.Add(agent.PlayerID);
-            agent.SetEliminated(true);
-
+            agent.EliminateWithSplash();
 
             SetGameplayScore(agent.PlayerID, eliminationOrder);
             ShowComboMessage($"P{agent.PlayerID} OUT!");
 
-            
             CheckForEarlyEnd();
         }
 
         private void CheckForEarlyEnd()
         {
             List<TournamentPlayerAgent> allPlayers = GetRegisteredPlayers().ToList();
-            int activeCount = allPlayers.Count(a => !eliminatedPlayers.Contains(a.PlayerID));
+            List<TournamentPlayerAgent> activePlayers = allPlayers
+                .Where(player => player != null && !eliminatedPlayers.Contains(player.PlayerID))
+                .ToList();
 
-            if (activeCount <= 1)
+            if (activePlayers.Count > 1)
             {
-                foreach (TournamentPlayerAgent agent in allPlayers)
-                {
-                    if (!eliminatedPlayers.Contains(agent.PlayerID))
-                    {
-                        SetGameplayScore(agent.PlayerID, survivorBonus);
-                        ShowComboMessage($"P{agent.PlayerID} WINS!");
-                    }
-                }
-
-                CompleteMatch();
+                return;
             }
+
+            if (activePlayers.Count == 1)
+            {
+                TournamentPlayerAgent winner = activePlayers[0];
+                SetGameplayScore(winner.PlayerID, survivorBonus);
+                ShowComboMessage($"P{winner.PlayerID} WINNER! 🏆");
+            }
+
+            CompleteMatch();
         }
+
+
 
         protected override List<PlayerMatchResult> CollectFinalScores()
         {
