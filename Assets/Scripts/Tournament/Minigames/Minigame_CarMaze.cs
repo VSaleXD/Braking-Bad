@@ -18,11 +18,11 @@ namespace BrakingBad.Gameplay
             finishOrder.Clear();
             nextRank = 1;
 
-            generator.Generate(seed: System.DateTime.Now.Millisecond);
+            // generator.Generate(seed: System.DateTime.Now.Millisecond);
 
-            distanceToExit = generator.BFSDistances(generator.ExitCell);
+            // distanceToExit = generator.BFSDistances(generator.ExitCell);
 
-            SpawnPlayersAtStart();
+            // SpawnPlayersAtStart();
         }
 
         private void SpawnPlayersAtStart()

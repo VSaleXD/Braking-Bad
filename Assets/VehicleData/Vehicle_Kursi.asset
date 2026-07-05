@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80da34bbc1bcfc4fb9788c25763cbb5, type: 3}
+  m_Name: Vehicle_Kursi
+  m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Garage.VehicleData
+  vehicleName: Kursi
+  thumbnailSprite: {fileID: 21300000, guid: 6da2618dce977af4f8446198c5579015, type: 3}
+  spriteP1White: {fileID: 21300000, guid: 6da2618dce977af4f8446198c5579015, type: 3}
+  spriteP2Red: {fileID: 21300000, guid: da257c3e5c289694983b389bbe0a10b7, type: 3}
+  spriteP3Blue: {fileID: 21300000, guid: b0cacee09005c2d459403a8acdf7bae3, type: 3}
+  spriteP4Orange: {fileID: 21300000, guid: 28196b7021be1ba449251e47034c6be0, type: 3}

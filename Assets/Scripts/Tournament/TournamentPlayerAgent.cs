@@ -1,4 +1,5 @@
 using UnityEngine;
+using BrakingBad.Garage;
 
 namespace BrakingBad.Gameplay
 {
@@ -10,6 +11,10 @@ namespace BrakingBad.Gameplay
         [SerializeField] private int teamIndex = 0;
         [SerializeField] private Rigidbody2D cachedRigidbody;
         [SerializeField] private bool isEliminated;
+
+        [Header("Vehicle Selection")]
+        [SerializeField] private VehicleRegistry vehicleRegistry;
+        [SerializeField] private SpriteRenderer vehicleSpriteRenderer;
 
         [Header("Control Modifiers")]
         public float steeringMultiplier = 1f;
@@ -32,11 +37,28 @@ namespace BrakingBad.Gameplay
                 cachedRigidbody = GetComponent<Rigidbody2D>();
             }
 
+            if (vehicleSpriteRenderer == null)
+            {
+                return;
+            }
+
             if (TournamentManager.Instance != null && playerID > TournamentManager.Instance.ActivePlayerCount)
             {
                 gameObject.SetActive(false);
                 return;
             }
+
+            ApplyVehicleSprite();
+
+        }
+        private void ApplyVehicleSprite()
+        {
+            if (vehicleRegistry == null || vehicleSpriteRenderer == null) return;
+
+            VehicleData selected = VehicleSelectionSave.LoadVehicle(playerID, vehicleRegistry);
+            if (selected == null) return;
+
+            vehicleSpriteRenderer.sprite = selected.GetSpriteForPlayer(playerID);
         }
 
         private void OnValidate()
@@ -82,27 +104,30 @@ namespace BrakingBad.Gameplay
                 renderer.enabled = false;
             }
         }
-public void ResetForNewMatch()
-{
-    SetEliminated(false);
 
-    playerController controller = GetComponent<playerController>();
-    if (controller != null)
-    {
-        controller.movementEnabled = true;
-    }
+        public void ResetForNewMatch()
+        {
+            SetEliminated(false);
 
-    if (cachedRigidbody != null)
-    {
-        cachedRigidbody.simulated = true;
-    }
+            playerController controller = GetComponent<playerController>();
+            if (controller != null)
+            {
+                controller.movementEnabled = true;
+            }
 
-    SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
-    foreach (SpriteRenderer renderer in renderers)
-    {
-        renderer.enabled = true;
-    }
-}
+            if (cachedRigidbody != null)
+            {
+                cachedRigidbody.simulated = true;
+            }
+
+            SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>();
+            foreach (SpriteRenderer renderer in renderers)
+            {
+                renderer.enabled = true;
+            }
+
+            ApplyVehicleSprite();
+        }
     
 
         public void SetControlMultipliers(float steering, float throttle)

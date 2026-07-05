@@ -256,6 +256,8 @@ MonoBehaviour:
   teamIndex: 0
   cachedRigidbody: {fileID: 5669144373273209371}
   isEliminated: 0
+  vehicleRegistry: {fileID: 11400000, guid: 739e5e67ce2ee2f459decae7eaf21167, type: 2}
+  vehicleSpriteRenderer: {fileID: 5336836010449176892}
   steeringMultiplier: 1
   throttleMultiplier: 1
   splashEffectPrefab: {fileID: 3235623593233952705, guid: f09e1a669544f6446a2f7704d51f32a7, type: 3}
@@ -286,8 +288,6 @@ MonoBehaviour:
   spinLockGraceTime: 0.1
   spinLockDamping: 0.3
   collisionSpinRetention: 0.2
-  explosionEffect: {fileID: 4839437673108255326, guid: 14f58a18ec313f445b4cd6a92b2dfef5, type: 3}
-  isDestroyed: 0
   crashSound: {fileID: 0}
   minImpactSpeedForSound: 2
   crashVolume: 0.4
@@ -479,7 +479,7 @@ Transform:
   m_GameObject: {fileID: 6513426880234660889}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9446, y: 4.7052, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.4164, z: 0.4164}
   m_ConstrainProportionsScale: 0
   m_Children:

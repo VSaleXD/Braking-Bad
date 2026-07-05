@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80da34bbc1bcfc4fb9788c25763cbb5, type: 3}
+  m_Name: Vehicle_Troli
+  m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Garage.VehicleData
+  vehicleName: Troli
+  thumbnailSprite: {fileID: 21300000, guid: db2b1cb3515490c4390866a592477c3b, type: 3}
+  spriteP1White: {fileID: 21300000, guid: db2b1cb3515490c4390866a592477c3b, type: 3}
+  spriteP2Red: {fileID: 21300000, guid: 28b7e30de814985409eeedaffe63c083, type: 3}
+  spriteP3Blue: {fileID: 21300000, guid: dde928be3e1308f4c8ea8539ad556cc6, type: 3}
+  spriteP4Orange: {fileID: 21300000, guid: ba439ed3215298d40b05f7e03f54f390, type: 3}

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80da34bbc1bcfc4fb9788c25763cbb5, type: 3}
+  m_Name: Vehicle_Car
+  m_EditorClassIdentifier: Assembly-CSharp::BrakingBad.Garage.VehicleData
+  vehicleName: Mobil
+  thumbnailSprite: {fileID: -8550192736322030912, guid: e0eb2068d4b4b374a900dc942a96e27e, type: 3}
+  spriteP1White: {fileID: -8550192736322030912, guid: e0eb2068d4b4b374a900dc942a96e27e, type: 3}
+  spriteP2Red: {fileID: 8040254076777608478, guid: 09555817fefe2b146b39dcadad51cbd9, type: 3}
+  spriteP3Blue: {fileID: 4331600399573434859, guid: 7d43e7376aaf59f4fb9f437a1dad352f, type: 3}
+  spriteP4Orange: {fileID: 6646980120666365981, guid: 5c31acb072161e84fb022edecde25518, type: 3}
