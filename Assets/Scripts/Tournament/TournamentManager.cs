@@ -21,6 +21,7 @@ namespace BrakingBad.Gameplay
             "FloorIsLava",
             "Spotlight",
             "CaptureTheFlag",
+            "MazeEscape",
         };
 
         [SerializeField] private string finalPodiumSceneName = "FinalPodium";
@@ -83,6 +84,7 @@ namespace BrakingBad.Gameplay
                     "FloorIsLava",
                     "Spotlight",
                     "CaptureTheFlag",
+                    "MazeEscape",
                 });
             }
         }
